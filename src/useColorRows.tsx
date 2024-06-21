@@ -1,10 +1,8 @@
-export function useColorRows() {
-  const step = 8;
-
-  const rgbColorRows = createFactorArray(step + 1, (rf, ri) =>
-    createFactorArray((step - ri) * 6 + 1, (f) =>
+export function useColorRows(steps: number) {
+  const rgbColorRows = createFactorArray(steps + 1, (rf, ri) =>
+    createFactorArray((steps - ri) * 6 + 1, (f) =>
       createFactorArray(ri + 1, (_, xi) =>
-        add(multiply(getRgbColorFromHue(f), 1 - rf), xi * (1 / step)),
+        add(multiply(getRgbColorFromHue(f), 1 - rf), xi * (1 / steps)),
       ),
     )
       .slice(0, -1)

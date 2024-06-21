@@ -4,7 +4,7 @@ import { MouseScrollable } from "./MouseScrollable";
 import { useColorRows } from "./useColorRows";
 
 export default function App() {
-  const { colorRows } = useColorRows();
+  const { colorRows } = useColorRows(6);
 
   return (
     <Container>
