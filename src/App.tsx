@@ -1,6 +1,7 @@
 import cx from "classnames";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { MouseScrollable } from "./MouseScrollable";
+import { ObserveResize } from "./ObserveResize";
 import { useColorRows } from "./useColorRows";
 
 export default function App() {
@@ -14,6 +15,8 @@ export default function App() {
 }
 
 function Container({ children }: { children: ReactNode }) {
+  const [circularScrollSize, setCircularScrollSize] = useState(0);
+
   return (
     <MouseScrollable
       className={cx(
@@ -27,17 +30,26 @@ function Container({ children }: { children: ReactNode }) {
 
         "select-none",
       )}
+      circularScrollSize={circularScrollSize}
     >
-      {children}
+      <div className={cx("flex", "flex-col", "p-[10px]", "gap-[10px]")}>
+        <ObserveResize
+          onResize={({ height }) => setCircularScrollSize(height + 10)}
+        >
+          {children}
+        </ObserveResize>
+        {children}
+        {children}
+      </div>
     </MouseScrollable>
   );
 }
 
 function ColorSwatches({ colorRows }: { colorRows: string[][] }) {
   return (
-    <div className={cx("p-[10px]", "flex", "flex-col", "gap-[10px]")}>
+    <div className={cx("flex", "flex-row", "gap-[10px]")}>
       {colorRows.map((colorRow) => (
-        <div className={cx("flex", "flex-row", "gap-[10px]", "justify-around")}>
+        <div className={cx("flex", "flex-col", "gap-[10px]", "justify-around")}>
           {colorRow.map((color) => (
             <ColorSwatch color={color} />
           ))}
