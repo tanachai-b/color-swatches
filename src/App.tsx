@@ -1,5 +1,6 @@
 import cx from "classnames";
 import { ReactNode } from "react";
+import { MouseScrollable } from "./MouseScrollable";
 import { useColorRows } from "./useColorRows";
 
 export default function App() {
@@ -14,7 +15,7 @@ export default function App() {
 
 function Container({ children }: { children: ReactNode }) {
   return (
-    <div
+    <MouseScrollable
       className={cx(
         "h-full",
         "bg-[#000000]",
@@ -23,10 +24,12 @@ function Container({ children }: { children: ReactNode }) {
         "place-items-center",
 
         "overflow-auto",
+
+        "select-none",
       )}
     >
       {children}
-    </div>
+    </MouseScrollable>
   );
 }
 
