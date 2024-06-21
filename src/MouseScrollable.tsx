@@ -2,11 +2,13 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 
 export function MouseScrollable({
   className,
-  circularScrollSize,
+  circularScrollSizeX,
+  circularScrollSizeY,
   children,
 }: {
   className: string;
-  circularScrollSize?: number;
+  circularScrollSizeX?: number;
+  circularScrollSizeY?: number;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,12 +44,18 @@ export function MouseScrollable({
   }, 1000 / 60);
 
   useInterval(() => {
-    if (circularScrollSize == null) return;
-
-    ref.current?.scrollTo({
-      left: (ref.current.scrollLeft % circularScrollSize) + circularScrollSize,
-      top: (ref.current.scrollTop % circularScrollSize) + circularScrollSize,
-    });
+    if (circularScrollSizeX != null) {
+      ref.current?.scrollTo({
+        left:
+          (ref.current.scrollLeft % circularScrollSizeX) + circularScrollSizeX,
+      });
+    }
+    if (circularScrollSizeY != null) {
+      ref.current?.scrollTo({
+        top:
+          (ref.current.scrollTop % circularScrollSizeY) + circularScrollSizeY,
+      });
+    }
   }, 1000 / 60);
 
   return (

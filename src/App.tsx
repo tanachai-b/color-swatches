@@ -30,7 +30,7 @@ function Container({ children }: { children: ReactNode }) {
 
         "select-none",
       )}
-      circularScrollSize={circularScrollSize}
+      circularScrollSizeY={circularScrollSize}
     >
       <div className={cx("flex", "flex-col", "p-[10px]", "gap-[10px]")}>
         <ObserveResize
