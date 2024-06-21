@@ -61,7 +61,8 @@ function useInterval(handler: () => void, timeout: number) {
   const [triggered, triggers] = useState({});
 
   useEffect(() => {
-    setInterval(() => triggers({}), timeout);
+    const interval = setInterval(() => triggers({}), timeout);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(handler, [triggered]);
