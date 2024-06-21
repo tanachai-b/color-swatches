@@ -1,13 +1,9 @@
 import cx from "classnames";
 import { ReactNode } from "react";
+import { useColorRows } from "./useColorRows";
 
 export default function App() {
-  const colorRows = [
-    Array.from({ length: 5 }, () => "#0000ff"),
-    Array.from({ length: 7 }, () => "#0000ff"),
-    Array.from({ length: 9 }, () => "#0000ff"),
-    Array.from({ length: 3 }, () => "#0000ff"),
-  ];
+  const { colorRows } = useColorRows();
 
   return (
     <Container>
@@ -36,9 +32,9 @@ function Container({ children }: { children: ReactNode }) {
 
 function ColorSwatches({ colorRows }: { colorRows: string[][] }) {
   return (
-    <div className={cx("p-[5px]", "flex", "flex-col", "gap-[5px]")}>
+    <div className={cx("p-[10px]", "flex", "flex-col", "gap-[10px]")}>
       {colorRows.map((colorRow) => (
-        <div className={cx("flex", "flex-row", "gap-[5px]")}>
+        <div className={cx("flex", "flex-row", "gap-[10px]", "justify-around")}>
           {colorRow.map((color) => (
             <ColorSwatch color={color} />
           ))}
@@ -52,10 +48,12 @@ function ColorSwatch({ color }: { color: string }) {
   return (
     <div
       className={cx(
-        "flex-grow",
+        // "flex-grow",
 
         "w-[20px]",
         "h-[20px]",
+
+        "rounded-full",
       )}
       style={{ backgroundColor: color }}
     />
