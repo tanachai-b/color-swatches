@@ -1,7 +1,6 @@
 import cx from "classnames";
 import { ReactNode, useState } from "react";
-import { MouseScrollable } from "./MouseScrollable";
-import { ObserveResize } from "./ObserveResize";
+import { MouseScrollable, ObserveResize } from "./components";
 import { getColorRows } from "./getColorRows";
 
 export default function App() {
