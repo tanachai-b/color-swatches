@@ -2,10 +2,10 @@ import cx from "classnames";
 import { ReactNode, useState } from "react";
 import { MouseScrollable } from "./MouseScrollable";
 import { ObserveResize } from "./ObserveResize";
-import { useColorRows } from "./useColorRows";
+import { getColorRows } from "./getColorRows";
 
 export default function App() {
-  const { colorRows } = useColorRows(6);
+  const colorRows = getColorRows(6);
 
   return (
     <Container>

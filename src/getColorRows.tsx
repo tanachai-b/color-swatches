@@ -1,4 +1,4 @@
-export function useColorRows(steps: number) {
+export function getColorRows(steps: number) {
   const rgbColorRows = createFactorArray(steps + 1, (rf, ri) =>
     createFactorArray((steps - ri) * 6 + 1, (f) =>
       createFactorArray(ri + 1, (_, xi) =>
@@ -13,7 +13,7 @@ export function useColorRows(steps: number) {
     colorRow.map((rgbColor) => convertRgbToHexColor(rgbColor)),
   );
 
-  return { colorRows };
+  return colorRows;
 }
 
 function createFactorArray<T>(
