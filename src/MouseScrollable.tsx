@@ -1,4 +1,11 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import {
+  MouseEvent,
+  ReactNode,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export function MouseScrollable({
   className,
@@ -15,33 +22,26 @@ export function MouseScrollable({
 
   const [mouseDown, setMouseDown] = useState<boolean>(false);
 
-  const [lastX, setLastX] = useState<number>(0);
-  const [lastY, setLastY] = useState<number>(0);
+  const scrollSpeed = useScrollSpeed(ref);
+  const setScrollInertia = useScrollInertia({ ref, mouseDown });
 
-  const [vx, setVx] = useState<number>(0);
-  const [vy, setVy] = useState<number>(0);
+  function onMouseDown() {
+    setMouseDown(true);
+  }
 
-  useInterval(() => {
+  function onMouseUp() {
+    setMouseDown(false);
+    setScrollInertia({ ...scrollSpeed });
+  }
+
+  function onMouseMove(e: MouseEvent) {
     if (mouseDown) {
-      setVx(((ref.current?.scrollLeft ?? 0) - lastX) / 2);
-      setVy(((ref.current?.scrollTop ?? 0) - lastY) / 2);
-
-      setLastX(ref.current?.scrollLeft ?? 0);
-      setLastY(ref.current?.scrollTop ?? 0);
-    }
-  }, 1000 / 30);
-
-  useInterval(() => {
-    if (!mouseDown) {
-      setVx((vx) => (Math.abs(vx) * 0.95 < 1 ? 0 : vx * 0.95));
-      setVy((vy) => (Math.abs(vy) * 0.95 < 1 ? 0 : vy * 0.95));
-
       ref.current?.scrollTo({
-        left: ref.current.scrollLeft + vx,
-        top: ref.current.scrollTop + vy,
+        left: ref.current.scrollLeft - e.movementX,
+        top: ref.current.scrollTop - e.movementY,
       });
     }
-  }, 1000 / 60);
+  }
 
   useInterval(() => {
     if (circularScrollSizeX != null) {
@@ -62,21 +62,72 @@ export function MouseScrollable({
     <div
       ref={ref}
       className={className}
-      onMouseDown={() => setMouseDown(true)}
-      onMouseUp={() => setMouseDown(false)}
-      onMouseLeave={() => setMouseDown(false)}
-      onMouseMove={(e) => {
-        if (mouseDown) {
-          ref.current?.scrollTo({
-            left: ref.current.scrollLeft - e.movementX,
-            top: ref.current.scrollTop - e.movementY,
-          });
-        }
-      }}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onMouseMove={onMouseMove}
     >
       {children}
     </div>
   );
+}
+
+function useScrollSpeed(ref: RefObject<HTMLDivElement>) {
+  const [lastPosition, setLastPosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  const [scrollSpeed, setScrollSpeed] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  useInterval(() => {
+    if (ref.current == null) return;
+
+    const { scrollLeft, scrollTop } = ref.current;
+
+    setScrollSpeed({
+      x: scrollLeft - lastPosition.x,
+      y: scrollTop - lastPosition.y,
+    });
+
+    setLastPosition({ x: scrollLeft, y: scrollTop });
+  }, 1000 / 60);
+
+  return scrollSpeed;
+}
+
+function useScrollInertia({
+  ref,
+  mouseDown,
+}: {
+  ref: RefObject<HTMLDivElement>;
+  mouseDown: boolean;
+}) {
+  const [scrollInertia, setScrollInertia] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  useInterval(() => {
+    if (ref.current == null) return;
+
+    if (!mouseDown) {
+      ref.current.scrollTo({
+        left: ref.current.scrollLeft + Math.round(scrollInertia.x),
+        top: ref.current.scrollTop + Math.round(scrollInertia.y),
+      });
+
+      setScrollInertia({
+        x: scrollInertia.x * 0.9,
+        y: scrollInertia.y * 0.9,
+      });
+    }
+  }, 1000 / 60);
+
+  return setScrollInertia;
 }
 
 function useInterval(handler: () => void, timeout: number) {
