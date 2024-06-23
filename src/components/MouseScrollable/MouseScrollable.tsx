@@ -1,5 +1,6 @@
 import { MouseEvent, ReactNode, useRef, useState } from "react";
-import { useInterval, useScrollInertia } from "./hooks";
+import { useCircularScroll } from "./useCircularScroll";
+import { useScrollInertia } from "./useScrollInertia";
 
 export function MouseScrollable({
   className,
@@ -17,6 +18,12 @@ export function MouseScrollable({
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
   useScrollInertia({ ref, isMouseDown });
+  useCircularScroll({
+    ref,
+    isMouseDown,
+    circularScrollSizeX,
+    circularScrollSizeY,
+  });
 
   function onMouseMove(e: MouseEvent) {
     if (isMouseDown) {
@@ -26,23 +33,6 @@ export function MouseScrollable({
       });
     }
   }
-
-  useInterval(() => {
-    if (isMouseDown) return;
-
-    if (circularScrollSizeX != null) {
-      ref.current?.scrollTo({
-        left:
-          (ref.current.scrollLeft % circularScrollSizeX) + circularScrollSizeX,
-      });
-    }
-    if (circularScrollSizeY != null) {
-      ref.current?.scrollTo({
-        top:
-          (ref.current.scrollTop % circularScrollSizeY) + circularScrollSizeY,
-      });
-    }
-  }, 1000 / 60);
 
   return (
     <div

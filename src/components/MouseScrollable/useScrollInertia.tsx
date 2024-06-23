@@ -1,4 +1,5 @@
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useState } from "react";
+import { useInterval } from "./useInterval";
 
 export function useScrollInertia({
   ref,
@@ -43,15 +44,4 @@ export function useScrollInertia({
       });
     }
   }, 1000 / 60);
-}
-
-export function useInterval(handler: () => void, timeout: number) {
-  const [triggered, triggers] = useState({});
-
-  useEffect(() => {
-    const interval = setInterval(() => triggers({}), timeout);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(handler, [triggered]);
 }
