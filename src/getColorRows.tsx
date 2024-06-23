@@ -33,9 +33,7 @@ function createFactorArray<T>(
 
 function getRgbColorFromHue(factor: number) {
   const section = Math.floor(factor * 6) % 6;
-  const gradient = parseFloat(
-    (-Math.abs((factor % (1 / 3)) * 3 * 2 - 1) + 1).toFixed(10),
-  );
+  const gradient = -Math.abs((factor % (1 / 3)) * 3 * 2 - 1) + 1;
 
   if (section === 0) {
     return { red: 1, green: gradient, blue: 0 };
@@ -85,9 +83,9 @@ function convertRgbToHexColor({
   green: number;
   blue: number;
 }) {
-  const red1 = Math.min(Math.floor(red * 256), 255);
-  const green1 = Math.min(Math.floor(green * 256), 255);
-  const blue1 = Math.min(Math.floor(blue * 256), 255);
+  const red1 = Math.min(Math.round(red * 256), 255);
+  const green1 = Math.min(Math.round(green * 256), 255);
+  const blue1 = Math.min(Math.round(blue * 256), 255);
 
   return (
     "#" +
