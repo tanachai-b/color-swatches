@@ -14,32 +14,41 @@ export default function App() {
 }
 
 function Container({ children }: { children: ReactNode }) {
-  const [circularScrollSize, setCircularScrollSize] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [swatchesWidth, setSwatchesWidth] = useState(0);
 
   return (
-    <MouseScrollable
-      className={cx(
-        "h-full",
-        "bg-[#000000]",
-
-        "grid",
-        "place-items-center",
-
-        "overflow-auto",
-
-        "select-none",
-      )}
-      circularScrollSizeX={circularScrollSize}
+    <ObserveResize
+      className={cx("size-full")}
+      onResize={({ width }) => setContainerWidth(width)}
     >
-      <div className={cx("flex", "flex-row", "p-[20px]", "gap-[20px]")}>
-        <ObserveResize
-          onResize={({ width }) => setCircularScrollSize(width + 20)}
-        >
-          {children}
-        </ObserveResize>
-        {children}
-        {children}
-      </div>
-    </MouseScrollable>
+      <MouseScrollable
+        className={cx(
+          "size-full",
+          "bg-[#000000]",
+
+          "grid",
+          "place-items-center",
+
+          "overflow-auto",
+
+          "select-none",
+        )}
+        circularScrollSizeX={swatchesWidth > 0 ? swatchesWidth + 20 : undefined}
+      >
+        <div className={cx("flex", "flex-row", "p-[20px]", "gap-[20px]")}>
+          <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
+            {children}
+          </ObserveResize>
+
+          {swatchesWidth + 40 > containerWidth && (
+            <>
+              {children}
+              {children}
+            </>
+          )}
+        </div>
+      </MouseScrollable>
+    </ObserveResize>
   );
 }
