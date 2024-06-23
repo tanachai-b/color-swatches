@@ -1,5 +1,5 @@
 import { MouseEvent, ReactNode, useRef, useState } from "react";
-import { useInterval, useScrollInertia, useScrollSpeed } from "./hooks";
+import { useInterval, useScrollInertia } from "./hooks";
 
 export function MouseScrollable({
   className,
@@ -14,22 +14,12 @@ export function MouseScrollable({
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const [mouseDown, setMouseDown] = useState<boolean>(false);
+  const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
-  const scrollSpeed = useScrollSpeed(ref);
-  const setScrollInertia = useScrollInertia({ ref, mouseDown });
-
-  function onMouseDown() {
-    setMouseDown(true);
-  }
-
-  function onMouseUp() {
-    setMouseDown(false);
-    setScrollInertia({ ...scrollSpeed });
-  }
+  useScrollInertia({ ref, isMouseDown });
 
   function onMouseMove(e: MouseEvent) {
-    if (mouseDown) {
+    if (isMouseDown) {
       ref.current?.scrollTo({
         left: ref.current.scrollLeft - e.movementX,
         top: ref.current.scrollTop - e.movementY,
@@ -38,6 +28,8 @@ export function MouseScrollable({
   }
 
   useInterval(() => {
+    if (isMouseDown) return;
+
     if (circularScrollSizeX != null) {
       ref.current?.scrollTo({
         left:
@@ -56,9 +48,9 @@ export function MouseScrollable({
     <div
       ref={ref}
       className={className}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp}
+      onMouseDown={() => setIsMouseDown(true)}
+      onMouseUp={() => setIsMouseDown(false)}
+      onMouseLeave={() => setIsMouseDown(false)}
       onMouseMove={onMouseMove}
     >
       {children}

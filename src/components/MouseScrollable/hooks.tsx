@@ -1,6 +1,12 @@
 import { RefObject, useEffect, useState } from "react";
 
-export function useScrollSpeed(ref: RefObject<HTMLDivElement>) {
+export function useScrollInertia({
+  ref,
+  isMouseDown,
+}: {
+  ref: RefObject<HTMLDivElement>;
+  isMouseDown: boolean;
+}) {
   const [lastPosition, setLastPosition] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -12,50 +18,31 @@ export function useScrollSpeed(ref: RefObject<HTMLDivElement>) {
   });
 
   useInterval(() => {
-    if (ref.current == null) return;
+    if (isMouseDown) {
+      if (ref.current == null) return;
 
-    const { scrollLeft, scrollTop } = ref.current;
+      const { scrollLeft, scrollTop } = ref.current;
 
-    setScrollSpeed({
-      x: scrollLeft - lastPosition.x,
-      y: scrollTop - lastPosition.y,
-    });
-
-    setLastPosition({ x: scrollLeft, y: scrollTop });
-  }, 1000 / 60);
-
-  return scrollSpeed;
-}
-
-export function useScrollInertia({
-  ref,
-  mouseDown,
-}: {
-  ref: RefObject<HTMLDivElement>;
-  mouseDown: boolean;
-}) {
-  const [scrollInertia, setScrollInertia] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
-
-  useInterval(() => {
-    if (ref.current == null) return;
-
-    if (!mouseDown) {
-      ref.current.scrollTo({
-        left: ref.current.scrollLeft + Math.round(scrollInertia.x),
-        top: ref.current.scrollTop + Math.round(scrollInertia.y),
+      setScrollSpeed({
+        x: scrollLeft - lastPosition.x,
+        y: scrollTop - lastPosition.y,
       });
 
-      setScrollInertia({
-        x: scrollInertia.x * 0.9,
-        y: scrollInertia.y * 0.9,
+      setLastPosition({ x: scrollLeft, y: scrollTop });
+    } else {
+      if (ref.current == null) return;
+
+      ref.current.scrollTo({
+        left: ref.current.scrollLeft + Math.round(scrollSpeed.x),
+        top: ref.current.scrollTop + Math.round(scrollSpeed.y),
+      });
+
+      setScrollSpeed({
+        x: scrollSpeed.x * 0.9,
+        y: scrollSpeed.y * 0.9,
       });
     }
   }, 1000 / 60);
-
-  return setScrollInertia;
 }
 
 export function useInterval(handler: () => void, timeout: number) {
