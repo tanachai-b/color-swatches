@@ -10,7 +10,7 @@ export function getColorRows(steps: number) {
     )
       .slice(0, -1)
       .flat(),
-  );
+  ).slice(0, -1);
 
   const colorRows = rgbColorRows.map((colorRow) =>
     colorRow.map((rgbColor) => convertRgbToHexColor(rgbColor)),
