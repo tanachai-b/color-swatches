@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { ColorSwatches, ScrollArea } from "./components";
-import { getColorRows } from "./getColorRows";
+import { getColorRows } from "./functions";
 
 export default function App() {
   const colorRows = getColorRows(8);

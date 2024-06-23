@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { ReactNode, useState } from "react";
-import { MouseScrollable, ObserveResize } from ".";
+import { MouseScrollable, ObserveResize } from "src/common-components";
 
 export function ScrollArea({ children }: { children: ReactNode }) {
   const [containerWidth, setContainerWidth] = useState(0);

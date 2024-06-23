@@ -1,5 +1,5 @@
 import { RefObject } from "react";
-import { useInterval } from "./useInterval";
+import { useInterval } from "src/common-hooks";
 
 export function useCircularScroll({
   ref,
