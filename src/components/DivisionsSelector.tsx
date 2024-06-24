@@ -9,7 +9,10 @@ export function DivisionsSelector({
   selectedDivisions: number;
   onSelect: (division: number) => void;
 }) {
-  const divisionOptions = [1, 2, 3, 4, 5, 6, 8, 12, 15, 16];
+  function onItemClick(closePopup: () => void, division: number) {
+    closePopup();
+    onSelect(division);
+  }
 
   return (
     <div
@@ -26,18 +29,43 @@ export function DivisionsSelector({
         value={`${selectedDivisions}`}
         options={(closePopup) => (
           <div className={cx("py-[10px]", "flex", "flex-col")}>
-            {divisionOptions.map((division) => (
-              <SelectorItem
-                label={`${division}`}
-                onClick={() => {
-                  closePopup();
-                  onSelect(division);
-                }}
-              />
-            ))}
+            <SelectorHeader>Divisible by HEX11</SelectorHeader>
+
+            <SelectorItem label="1" onClick={() => onItemClick(closePopup, 1)} />
+            <SelectorItem label="3" onClick={() => onItemClick(closePopup, 3)} />
+            <SelectorItem label="5" onClick={() => onItemClick(closePopup, 5)} />
+            <SelectorItem label="15" onClick={() => onItemClick(closePopup, 15)} />
+
+            <SelectorHeader>Divisible by HEX10</SelectorHeader>
+
+            <SelectorItem label="2" onClick={() => onItemClick(closePopup, 2)} />
+            <SelectorItem label="4" onClick={() => onItemClick(closePopup, 4)} />
+            <SelectorItem label="8" onClick={() => onItemClick(closePopup, 8)} />
+            <SelectorItem label="16" onClick={() => onItemClick(closePopup, 16)} />
           </div>
         )}
       />
+    </div>
+  );
+}
+
+function SelectorHeader({ children }: { children: ReactNode }) {
+  return (
+    <div
+      className={cx(
+        "px-[20px]",
+        "pt-[20px]",
+        "pb-[10px]",
+
+        "text-[#ffffff60]",
+        "text-[10px]",
+        "text-center",
+
+        "tracking-[2px]",
+        "uppercase",
+      )}
+    >
+      {children}
     </div>
   );
 }
@@ -145,6 +173,7 @@ function SelectorButton({
 
           "text-[#ffffff60]",
           "text-[15px]",
+          "tracking-[1px]",
 
           "text-nowrap",
           "overflow-hidden",
