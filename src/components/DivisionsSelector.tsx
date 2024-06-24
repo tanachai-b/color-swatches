@@ -31,17 +31,21 @@ export function DivisionsSelector({
           <div className={cx("py-[10px]", "flex", "flex-col")}>
             <SelectorHeader>Divisible by HEX11</SelectorHeader>
 
-            <SelectorItem label="1" onClick={() => onItemClick(closePopup, 1)} />
-            <SelectorItem label="3" onClick={() => onItemClick(closePopup, 3)} />
-            <SelectorItem label="5" onClick={() => onItemClick(closePopup, 5)} />
-            <SelectorItem label="15" onClick={() => onItemClick(closePopup, 15)} />
+            {[1, 3, 5, 15].map((divisions) => (
+              <SelectorItem
+                divisions={divisions}
+                onClick={() => onItemClick(closePopup, divisions)}
+              />
+            ))}
 
             <SelectorHeader>Divisible by HEX10</SelectorHeader>
 
-            <SelectorItem label="2" onClick={() => onItemClick(closePopup, 2)} />
-            <SelectorItem label="4" onClick={() => onItemClick(closePopup, 4)} />
-            <SelectorItem label="8" onClick={() => onItemClick(closePopup, 8)} />
-            <SelectorItem label="16" onClick={() => onItemClick(closePopup, 16)} />
+            {[2, 4, 8, 16].map((divisions) => (
+              <SelectorItem
+                divisions={divisions}
+                onClick={() => onItemClick(closePopup, divisions)}
+              />
+            ))}
           </div>
         )}
       />
@@ -71,29 +75,57 @@ function SelectorHeader({ children }: { children: ReactNode }) {
 }
 
 function SelectorItem({
-  label,
+  divisions,
   onClick,
 }: {
-  label: string;
+  divisions: number;
   onClick: MouseEventHandler<HTMLDivElement>;
 }) {
+  const colorCount = countColors(divisions);
+
   return (
     <div
       className={cx(
         "px-[20px]",
         "py-[15px]",
 
-        "text-[#ffffff80]",
-        "text-[15px]",
-        "text-center",
+        "flex",
+        "flex-row",
+
+        "items-center",
+        "gap-[10px]",
 
         "cursor-pointer",
       )}
       onClick={onClick}
     >
-      {label}
+      <div
+        className={cx(
+          "w-[30%]",
+
+          "text-[#ffffffc0]",
+          "text-[15px]",
+          "text-right",
+        )}
+        onClick={onClick}
+      >
+        {divisions}
+      </div>
+
+      <div className={cx("text-[#ffffff60]", "text-[12px]", "text-right")} onClick={onClick}>
+        ({colorCount.toLocaleString()} Colors)
+      </div>
     </div>
   );
+}
+
+function countColors(divisions: number) {
+  const colorCount = Array.from({ length: divisions }).reduce<number>(
+    (colorCount, _, index) => colorCount + (divisions - index) * (index + 1) * 6,
+    0,
+  );
+
+  return colorCount;
 }
 
 function Selector({
