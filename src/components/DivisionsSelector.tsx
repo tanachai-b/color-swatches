@@ -3,14 +3,14 @@ import { MouseEventHandler, ReactNode, useState } from "react";
 import { Icon } from "src/common-components";
 
 export function DivisionsSelector({
-  divisionOptions,
   selectedDivisions,
   onSelect,
 }: {
-  divisionOptions: number[];
   selectedDivisions: number;
   onSelect: (division: number) => void;
 }) {
+  const divisionOptions = [1, 2, 3, 4, 5, 6, 8, 12, 15, 16];
+
   return (
     <div
       className={cx(
@@ -26,12 +26,12 @@ export function DivisionsSelector({
         value={`${selectedDivisions}`}
         options={(closePopup) => (
           <div className={cx("py-[10px]", "flex", "flex-col")}>
-            {divisionOptions.map((division, index) => (
+            {divisionOptions.map((division) => (
               <SelectorItem
                 label={`${division}`}
                 onClick={() => {
                   closePopup();
-                  onSelect(divisionOptions[index]);
+                  onSelect(division);
                 }}
               />
             ))}

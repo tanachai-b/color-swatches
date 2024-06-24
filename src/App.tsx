@@ -4,8 +4,6 @@ import { ColorSwatches, DivisionsSelector, ScrollArea } from "./components";
 import { getColorRows } from "./functions";
 
 export default function App() {
-  const divisionOptions = [1, 2, 3, 4, 5, 6, 8, 12, 15, 16];
-
   const [divisions, setDivisions] = useState<number>(8);
 
   const colorRows = useMemo(() => getColorRows(divisions), [divisions]);
@@ -16,11 +14,7 @@ export default function App() {
         <ColorSwatches colorRows={colorRows} />
       </ScrollArea>
 
-      <DivisionsSelector
-        divisionOptions={divisionOptions}
-        selectedDivisions={divisions}
-        onSelect={setDivisions}
-      />
+      <DivisionsSelector selectedDivisions={divisions} onSelect={setDivisions} />
     </div>
   );
 }
