@@ -13,7 +13,7 @@ export function getColorRows(steps: number) {
   ).slice(0, -1);
 
   const colorRows = rgbColorRows.map((colorRow) =>
-    colorRow.map((rgbColor) => convertRgbToHexColor(rgbColor)),
+    colorRow.map((rgbColor) => convertRgbToHexColor(rgbColor, steps)),
   );
 
   return colorRows;
@@ -74,18 +74,16 @@ function multiply(
   };
 }
 
-function convertRgbToHexColor({
-  red,
-  green,
-  blue,
-}: {
-  red: number;
-  green: number;
-  blue: number;
-}) {
-  const red1 = Math.min(Math.round(red * 256), 255);
-  const green1 = Math.min(Math.round(green * 256), 255);
-  const blue1 = Math.min(Math.round(blue * 256), 255);
+function convertRgbToHexColor(
+  { red, green, blue }: { red: number; green: number; blue: number },
+  steps: number = 256,
+) {
+  const isDivisible255 = Math.round(255 / steps) === 255 / steps;
+  const maxValue = isDivisible255 ? 255 : 256;
+
+  const red1 = Math.min(Math.round(red * maxValue), 255);
+  const green1 = Math.min(Math.round(green * maxValue), 255);
+  const blue1 = Math.min(Math.round(blue * maxValue), 255);
 
   return (
     "#" +
