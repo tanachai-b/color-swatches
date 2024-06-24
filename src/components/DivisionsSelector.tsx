@@ -162,7 +162,7 @@ function SelectorBackdrop({ onClick }: { onClick: MouseEventHandler<HTMLDivEleme
 
         "inset-0",
 
-        "bg-[#10101040]",
+        "bg-[#00000040]",
         "backdrop-blur-[1px]",
       )}
       onClick={onClick}
