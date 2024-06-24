@@ -2,10 +2,7 @@ export function getColorRows(steps: number) {
   const rgbColorRows = createFactorArray(steps + 1, (saturation, rowIndex) =>
     createFactorArray((steps - rowIndex) * 6 + 1, (hue) =>
       createFactorArray(rowIndex + 1, (brightness) =>
-        add(
-          multiply(getRgbColorFromHue(hue), 1 - saturation),
-          brightness * saturation,
-        ),
+        add(multiply(getRgbColorFromHue(hue), 1 - saturation), brightness * saturation),
       ),
     )
       .slice(0, -1)
@@ -19,10 +16,7 @@ export function getColorRows(steps: number) {
   return colorRows;
 }
 
-function createFactorArray<T>(
-  length: number,
-  onGetValues: (factor: number, index: number) => T,
-) {
+function createFactorArray<T>(length: number, onGetValues: (factor: number, index: number) => T) {
   return Array.from({ length }, (_, i) => {
     const f = i / (length - 1);
     const factor = isNaN(f) ? 0 : f;
@@ -52,10 +46,7 @@ function getRgbColorFromHue(factor: number) {
   return { red: 0.5, green: 0.5, blue: 0.5 };
 }
 
-function add(
-  { red, green, blue }: { red: number; green: number; blue: number },
-  value: number,
-) {
+function add({ red, green, blue }: { red: number; green: number; blue: number }, value: number) {
   return {
     red: red + value,
     green: green + value,

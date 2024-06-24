@@ -81,9 +81,7 @@ function Selector({
 
   return (
     <div className={cx("leading-none", "grid", "relative")}>
-      {isPopupOpen && (
-        <SelectorBackdrop onClick={() => setIsPopupOpen(false)} />
-      )}
+      {isPopupOpen && <SelectorBackdrop onClick={() => setIsPopupOpen(false)} />}
 
       <SelectorButton
         label={label}
@@ -91,18 +89,12 @@ function Selector({
         onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}
       />
 
-      {isPopupOpen && (
-        <SelectorPopup>{options(() => setIsPopupOpen(false))}</SelectorPopup>
-      )}
+      {isPopupOpen && <SelectorPopup>{options(() => setIsPopupOpen(false))}</SelectorPopup>}
     </div>
   );
 }
 
-function SelectorBackdrop({
-  onClick,
-}: {
-  onClick: MouseEventHandler<HTMLDivElement>;
-}) {
+function SelectorBackdrop({ onClick }: { onClick: MouseEventHandler<HTMLDivElement> }) {
   return (
     <div
       className={cx(

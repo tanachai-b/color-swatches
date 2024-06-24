@@ -17,15 +17,13 @@ export function useCircularScroll({
 
     if (circularScrollSizeX != null) {
       ref.current?.scrollTo({
-        left:
-          (ref.current.scrollLeft % circularScrollSizeX) + circularScrollSizeX,
+        left: (ref.current.scrollLeft % circularScrollSizeX) + circularScrollSizeX,
       });
     }
 
     if (circularScrollSizeY != null) {
       ref.current?.scrollTo({
-        top:
-          (ref.current.scrollTop % circularScrollSizeY) + circularScrollSizeY,
+        top: (ref.current.scrollTop % circularScrollSizeY) + circularScrollSizeY,
       });
     }
   }, 1000 / 60);
