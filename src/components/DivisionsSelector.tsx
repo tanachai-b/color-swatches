@@ -21,12 +21,12 @@ export function DivisionsSelector({
 
         "place-self-center",
         "top-[50px]",
-        "w-[200px]",
+        "w-[320px]",
       )}
     >
       <Selector
         label="Divisions"
-        value={`${selectedDivisions}`}
+        value={<SelectorValue divisions={selectedDivisions} />}
         options={(closePopup) => (
           <div className={cx("py-[10px]", "flex", "flex-col")}>
             <SelectorHeader>Divisible by HEX11</SelectorHeader>
@@ -53,6 +53,46 @@ export function DivisionsSelector({
           </div>
         )}
       />
+    </div>
+  );
+}
+
+function SelectorValue({ divisions }: { divisions: number }): ReactNode {
+  const colorCount = countColors(divisions);
+
+  return (
+    <div
+      className={cx(
+        "flex",
+        "flex-row",
+
+        "justify-center",
+        "items-center",
+        "gap-[10px]",
+      )}
+    >
+      <div
+        className={cx(
+          "w-[30px]",
+
+          "text-[#ffffff]",
+          "text-[20px]",
+          "text-right",
+        )}
+      >
+        {divisions}
+      </div>
+
+      <div
+        className={cx(
+          "w-[90px]",
+
+          "text-[#ffffff60]",
+          "text-[12px]",
+        )}
+      >
+        ({colorCount.toLocaleString()} Colors)
+      </div>
     </div>
   );
 }
@@ -100,6 +140,7 @@ function SelectorItem({
         "flex",
         "flex-row",
 
+        "justify-center",
         "items-center",
         "gap-[10px]",
 
@@ -109,18 +150,24 @@ function SelectorItem({
     >
       <div
         className={cx(
-          "w-[30%]",
+          "w-[30px]",
 
           "text-[#ffffffc0]",
           "text-[15px]",
           "text-right",
         )}
-        onClick={onClick}
       >
         {divisions}
       </div>
 
-      <div className={cx("text-[#ffffff60]", "text-[12px]", "text-right")} onClick={onClick}>
+      <div
+        className={cx(
+          "w-[90px]",
+
+          "text-[#ffffff60]",
+          "text-[12px]",
+        )}
+      >
         ({colorCount.toLocaleString()} Colors)
       </div>
     </div>
@@ -142,7 +189,7 @@ function Selector({
   options,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   options: (closePopup: () => void) => ReactNode;
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
@@ -151,11 +198,9 @@ function Selector({
     <div className={cx("leading-none", "grid", "relative")}>
       {isPopupOpen && <SelectorBackdrop onClick={() => setIsPopupOpen(false)} />}
 
-      <SelectorButton
-        label={label}
-        value={value}
-        onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}
-      />
+      <SelectorButton label={label} onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}>
+        {value}
+      </SelectorButton>
 
       {isPopupOpen && <SelectorPopup>{options(() => setIsPopupOpen(false))}</SelectorPopup>}
     </div>
@@ -180,12 +225,12 @@ function SelectorBackdrop({ onClick }: { onClick: MouseEventHandler<HTMLDivEleme
 
 function SelectorButton({
   label,
-  value,
   onClick,
+  children,
 }: {
   label: string;
-  value: string;
   onClick: MouseEventHandler<HTMLDivElement>;
+  children: ReactNode;
 }) {
   return (
     <div
@@ -204,6 +249,8 @@ function SelectorButton({
         "gap-[20px]",
 
         "cursor-pointer",
+
+        "overflow-auto",
       )}
       onClick={onClick}
     >
@@ -214,30 +261,12 @@ function SelectorButton({
           "text-[#ffffff60]",
           "text-[15px]",
           "tracking-[1px]",
-
-          "text-nowrap",
-          "overflow-hidden",
-          "overflow-ellipsis",
         )}
       >
         {label}
       </div>
 
-      <div
-        className={cx(
-          "grow",
-
-          "text-[#ffffff]",
-          "text-[20px]",
-          "text-right",
-
-          "text-nowrap",
-          "overflow-hidden",
-          "overflow-ellipsis",
-        )}
-      >
-        {value}
-      </div>
+      <div className={cx("grow")}>{children}</div>
 
       <div className={cx("text-[#ffffff60]", "text-[20px]", "grid")}>
         <Icon icon={"keyboard_arrow_down"} />
