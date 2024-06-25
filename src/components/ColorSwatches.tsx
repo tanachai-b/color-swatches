@@ -3,10 +3,10 @@ import cx from "classnames";
 export function ColorSwatches({ colorRows }: { colorRows: string[][] }) {
   return (
     <div className={cx("flex", "flex-col", "gap-[20px]")}>
-      {colorRows.map((colorRow) => (
-        <div className={cx("flex", "flex-row", "gap-[20px]", "justify-around")}>
+      {colorRows.map((colorRow, index) => (
+        <div key={index} className={cx("flex", "flex-row", "gap-[20px]", "justify-around")}>
           {colorRow.map((color) => (
-            <ColorSwatch color={color} />
+            <ColorSwatch key={color} color={color} />
           ))}
         </div>
       ))}

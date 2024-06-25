@@ -33,6 +33,7 @@ export function DivisionsSelector({
 
             {[1, 3, 5, 15].map((divisions) => (
               <SelectorItem
+                key={divisions}
                 divisions={divisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
@@ -42,6 +43,7 @@ export function DivisionsSelector({
 
             {[2, 4, 8, 16].map((divisions) => (
               <SelectorItem
+                key={divisions}
                 divisions={divisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
