@@ -132,10 +132,11 @@ function SelectorItem({
   return (
     <div
       className={cx(
+        "hover:bg-[#ffffff10]",
+        { "bg-[#ffffff10]": isSelected },
+
         "px-[30px]",
         "py-[15px]",
-
-        { "bg-[#ffffff10]": isSelected },
 
         "flex",
         "flex-row",
@@ -236,6 +237,8 @@ function SelectorButton({
     <div
       className={cx(
         "bg-[#101010c0]",
+        "hover:bg-[#202020c0]",
+
         "rounded-[10px]",
         "backdrop-blur-[10px]",
 
