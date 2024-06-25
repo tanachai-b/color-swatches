@@ -21,17 +21,17 @@ export function DivisionsSelector({
 
         "place-self-center",
         "top-[50px]",
-        "w-[320px]",
+        "w-[300px]",
       )}
     >
       <Selector
-        label="Divisions"
+        label="Steps"
         value={<SelectorValue divisions={selectedDivisions} />}
         options={(closePopup) => (
           <div className={cx("py-[10px]", "flex", "flex-col")}>
-            <SelectorHeader>Divisible by HEX11</SelectorHeader>
+            <SelectorHeader>HEX10 Divisble Colors</SelectorHeader>
 
-            {[1, 3, 5, 15].map((divisions) => (
+            {[1, 2, 4, 8, 16].map((divisions) => (
               <SelectorItem
                 key={divisions}
                 divisions={divisions}
@@ -40,9 +40,9 @@ export function DivisionsSelector({
               />
             ))}
 
-            <SelectorHeader>Divisible by HEX10</SelectorHeader>
+            <SelectorHeader>HEX11 Divisble Colors</SelectorHeader>
 
-            {[2, 4, 8, 16].map((divisions) => (
+            {[3, 5, 15].map((divisions) => (
               <SelectorItem
                 key={divisions}
                 divisions={divisions}
@@ -132,7 +132,7 @@ function SelectorItem({
   return (
     <div
       className={cx(
-        "px-[20px]",
+        "px-[30px]",
         "py-[15px]",
 
         { "bg-[#ffffff10]": isSelected },
