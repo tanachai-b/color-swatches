@@ -35,6 +35,7 @@ export function DivisionsSelector({
               <SelectorItem
                 key={divisions}
                 divisions={divisions}
+                isSelected={selectedDivisions === divisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
             ))}
@@ -45,6 +46,7 @@ export function DivisionsSelector({
               <SelectorItem
                 key={divisions}
                 divisions={divisions}
+                isSelected={selectedDivisions === divisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
             ))}
@@ -78,9 +80,11 @@ function SelectorHeader({ children }: { children: ReactNode }) {
 
 function SelectorItem({
   divisions,
+  isSelected,
   onClick,
 }: {
   divisions: number;
+  isSelected: boolean;
   onClick: MouseEventHandler<HTMLDivElement>;
 }) {
   const colorCount = countColors(divisions);
@@ -90,6 +94,8 @@ function SelectorItem({
       className={cx(
         "px-[20px]",
         "py-[15px]",
+
+        { "bg-[#ffffff10]": isSelected },
 
         "flex",
         "flex-row",
