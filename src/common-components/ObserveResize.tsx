@@ -1,13 +1,9 @@
-import { CSSProperties, ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 export function ObserveResize({
-  className,
-  style,
   onResize,
   children,
 }: {
-  className?: string;
-  style?: CSSProperties;
   onResize?: (boundingClientRect: DOMRect) => void;
   children: ReactNode;
 }) {
@@ -25,9 +21,5 @@ export function ObserveResize({
     return () => resizeObserver.disconnect();
   }, [onResize]);
 
-  return (
-    <div ref={ref} className={className} style={style}>
-      {children}
-    </div>
-  );
+  return <div ref={ref}>{children}</div>;
 }

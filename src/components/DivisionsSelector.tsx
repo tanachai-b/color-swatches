@@ -21,6 +21,7 @@ export function DivisionsSelector({
 
         "place-self-center",
         "top-[50px]",
+
         "w-[300px]",
       )}
     >
