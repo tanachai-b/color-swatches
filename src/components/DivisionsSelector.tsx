@@ -146,6 +146,8 @@ function SelectorItem({
         "gap-[10px]",
 
         "cursor-pointer",
+
+        "transition-all",
       )}
       onClick={onClick}
     >
@@ -197,18 +199,24 @@ function Selector({
 
   return (
     <div className={cx("leading-none", "grid", "relative")}>
-      {isPopupOpen && <SelectorBackdrop onClick={() => setIsPopupOpen(false)} />}
+      <SelectorBackdrop isOpen={isPopupOpen} onClick={() => setIsPopupOpen(false)} />
 
       <SelectorButton label={label} onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}>
         {value}
       </SelectorButton>
 
-      {isPopupOpen && <SelectorPopup>{options(() => setIsPopupOpen(false))}</SelectorPopup>}
+      <SelectorPopup isOpen={isPopupOpen}>{options(() => setIsPopupOpen(false))}</SelectorPopup>
     </div>
   );
 }
 
-function SelectorBackdrop({ onClick }: { onClick: MouseEventHandler<HTMLDivElement> }) {
+function SelectorBackdrop({
+  isOpen,
+  onClick,
+}: {
+  isOpen: boolean;
+  onClick: MouseEventHandler<HTMLDivElement>;
+}) {
   return (
     <div
       className={cx(
@@ -218,6 +226,11 @@ function SelectorBackdrop({ onClick }: { onClick: MouseEventHandler<HTMLDivEleme
 
         "bg-[#00000040]",
         "backdrop-blur-[1px]",
+
+        isOpen ? "opacity-100" : "opacity-0",
+        { "pointer-events-none": !isOpen },
+
+        "transition-all",
       )}
       onClick={onClick}
     />
@@ -254,6 +267,8 @@ function SelectorButton({
         "cursor-pointer",
 
         "overflow-auto",
+
+        "transition-all",
       )}
       onClick={onClick}
     >
@@ -278,7 +293,7 @@ function SelectorButton({
   );
 }
 
-function SelectorPopup({ children }: { children: ReactNode }) {
+function SelectorPopup({ isOpen, children }: { isOpen: boolean; children: ReactNode }) {
   return (
     <div
       className={cx(
@@ -294,6 +309,11 @@ function SelectorPopup({ children }: { children: ReactNode }) {
         "backdrop-blur-[10px]",
 
         "shadow-[0_20px_50px_0_#000000ff]",
+
+        isOpen ? "opacity-100" : "opacity-0",
+        { "pointer-events-none": !isOpen },
+
+        "transition-all",
       )}
     >
       {children}
