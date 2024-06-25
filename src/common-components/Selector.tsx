@@ -40,10 +40,8 @@ function SelectorBackdrop({
 
         "inset-0",
 
-        "bg-[#00000040]",
-        "backdrop-blur-[1px]",
-
-        isOpen ? "opacity-100" : "opacity-0",
+        isOpen ? "bg-[#00000040]" : "bg-[#00000000]",
+        isOpen ? "backdrop-blur-[10px]" : "backdrop-blur-[0px]",
         { "pointer-events-none": !isOpen },
 
         "transition-all",
@@ -69,7 +67,7 @@ function SelectorButton({
         "hover:bg-[#202020c0]",
 
         "rounded-[10px]",
-        "backdrop-blur-[10px]",
+        "backdrop-blur-[20px]",
 
         "shadow-[0_20px_50px_0_#000000ff]",
 
@@ -122,7 +120,7 @@ function SelectorPopup({ isOpen, children }: { isOpen: boolean; children: ReactN
 
         "bg-[#101010c0]",
         "rounded-[10px]",
-        "backdrop-blur-[10px]",
+        "backdrop-blur-[20px]",
 
         "shadow-[0_20px_50px_0_#000000ff]",
 
