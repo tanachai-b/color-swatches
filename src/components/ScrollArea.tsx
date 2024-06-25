@@ -19,8 +19,6 @@ export function ScrollArea({ children }: { children: ReactNode }) {
           "place-items-center",
 
           "overflow-auto",
-
-          "select-none",
         )}
         circularScrollSizeX={swatchesWidth > 0 ? swatchesWidth + 20 : undefined}
       >

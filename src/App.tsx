@@ -9,7 +9,16 @@ export default function App() {
   const colorRows = useMemo(() => getColorRows(divisions), [divisions]);
 
   return (
-    <div className={cx("size-full", "grid", "relative")}>
+    <div
+      className={cx(
+        "size-full",
+
+        "grid",
+        "relative",
+
+        "select-none",
+      )}
+    >
       <ScrollArea>
         <ColorSwatches colorRows={colorRows} />
       </ScrollArea>
