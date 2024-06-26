@@ -14,6 +14,17 @@ export function DivisionsSelector({
     onSelect(division);
   }
 
+  const divisionLabels: { [key: number]: string } = {
+    1: "256 / 1",
+    2: "256 / 2",
+    4: "256 / 4",
+    8: "256 / 8",
+    16: "256 / 16",
+    3: "255 / 3",
+    5: "255 / 5",
+    15: "255 / 15",
+  };
+
   return (
     <div
       className={cx(
@@ -22,30 +33,37 @@ export function DivisionsSelector({
         "place-self-center",
         "top-[50px]",
 
-        "w-[300px]",
+        "w-[360px]",
       )}
     >
       <Selector
-        label="Steps"
-        value={<SelectorValue divisions={selectedDivisions} />}
+        label="Precisions"
+        value={
+          <SelectorValue
+            divisionsLabel={divisionLabels[selectedDivisions]}
+            divisions={selectedDivisions}
+          />
+        }
         options={(closePopup) => (
           <div className={cx("py-[10px]", "flex", "flex-col")}>
-            <SelectorHeader>HEX10 Divisble Colors</SelectorHeader>
+            <SelectorHeader>HEX10 Colors</SelectorHeader>
 
             {[1, 2, 4, 8, 16].map((divisions) => (
               <SelectorItem
                 key={divisions}
+                divisionsLabel={divisionLabels[divisions]}
                 divisions={divisions}
                 isSelected={divisions === selectedDivisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
             ))}
 
-            <SelectorHeader>HEX11 Divisble Colors</SelectorHeader>
+            <SelectorHeader>HEX11 Colors</SelectorHeader>
 
             {[3, 5, 15].map((divisions) => (
               <SelectorItem
                 key={divisions}
+                divisionsLabel={divisionLabels[divisions]}
                 divisions={divisions}
                 isSelected={divisions === selectedDivisions}
                 onClick={() => onItemClick(closePopup, divisions)}
@@ -58,7 +76,13 @@ export function DivisionsSelector({
   );
 }
 
-function SelectorValue({ divisions }: { divisions: number }): ReactNode {
+function SelectorValue({
+  divisionsLabel,
+  divisions,
+}: {
+  divisionsLabel: string;
+  divisions: number;
+}): ReactNode {
   const colorCount = countColors(divisions);
 
   return (
@@ -74,19 +98,18 @@ function SelectorValue({ divisions }: { divisions: number }): ReactNode {
     >
       <div
         className={cx(
-          "w-[30px]",
+          "w-[80px]",
 
           "text-[#ffffff]",
           "text-[20px]",
-          "text-right",
         )}
       >
-        {divisions}
+        {divisionsLabel}
       </div>
 
       <div
         className={cx(
-          "w-[90px]",
+          "w-[80px]",
 
           "text-[#ffffff60]",
           "text-[12px]",
@@ -120,10 +143,12 @@ function SelectorHeader({ children }: { children: ReactNode }) {
 }
 
 function SelectorItem({
+  divisionsLabel,
   divisions,
   isSelected,
   onClick,
 }: {
+  divisionsLabel: string;
   divisions: number;
   isSelected: boolean;
   onClick: MouseEventHandler<HTMLDivElement>;
@@ -154,19 +179,18 @@ function SelectorItem({
     >
       <div
         className={cx(
-          "w-[30px]",
+          "w-[60px]",
 
           "text-[#ffffffc0]",
           "text-[15px]",
-          "text-right",
         )}
       >
-        {divisions}
+        {divisionsLabel}
       </div>
 
       <div
         className={cx(
-          "w-[90px]",
+          "w-[80px]",
 
           "text-[#ffffff60]",
           "text-[12px]",
