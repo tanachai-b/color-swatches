@@ -8,6 +8,8 @@ export default function App() {
 
   const colorRows = useMemo(() => getColorRows(divisions), [divisions]);
 
+  const [selectedColor, setSelectedColor] = useState<string>();
+
   return (
     <div
       className={cx(
@@ -19,8 +21,15 @@ export default function App() {
         "select-none",
       )}
     >
-      <ScrollArea>
-        <ColorSwatches colorRows={colorRows} />
+      <ScrollArea onClick={() => setSelectedColor(undefined)}>
+        <ColorSwatches
+          colorRows={colorRows}
+          selected={selectedColor}
+          onClick={(e, color) => {
+            setSelectedColor(color);
+            e.stopPropagation();
+          }}
+        />
       </ScrollArea>
 
       <DivisionsSelector selectedDivisions={divisions} onSelect={setDivisions} />

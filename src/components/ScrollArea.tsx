@@ -1,51 +1,60 @@
 import cx from "classnames";
-import { ReactNode, useState } from "react";
+import { MouseEventHandler, ReactNode, useState } from "react";
 import { MouseScrollable, ObserveResize } from "src/common-components";
+import { Clickable } from "../common-components";
 
-export function ScrollArea({ children }: { children: ReactNode }) {
+export function ScrollArea({
+  onClick,
+  children,
+}: {
+  onClick: MouseEventHandler<HTMLDivElement>;
+  children: ReactNode;
+}) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [swatchesWidth, setSwatchesWidth] = useState(0);
 
   const isWideSwatches = swatchesWidth + 20 * 2 > containerWidth;
 
   return (
-    <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
-      <MouseScrollable
-        className={cx(
-          "absolute",
-
-          "size-full",
-          "bg-[#000000]",
-
-          "grid",
-          "place-items-center",
-
-          "overflow-auto",
-        )}
-        circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}
-      >
-        <div
+    <Clickable onClick={onClick}>
+      <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
+        <MouseScrollable
           className={cx(
-            "flex",
-            "flex-row",
-            "justify-center",
+            "absolute",
 
-            "p-[20px]",
-            "py-[150px]",
+            "size-full",
+            "bg-[#000000]",
 
-            "gap-[20px]",
+            "grid",
+            "place-items-center",
+
+            "overflow-auto",
           )}
-          style={{ width: isWideSwatches ? "auto" : swatchesWidth + 800 }}
+          circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}
         >
-          {isWideSwatches && children}
+          <div
+            className={cx(
+              "flex",
+              "flex-row",
+              "justify-center",
 
-          <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
-            {children}
-          </ObserveResize>
+              "p-[20px]",
+              "py-[150px]",
 
-          {isWideSwatches && children}
-        </div>
-      </MouseScrollable>
-    </ObserveResize>
+              "gap-[20px]",
+            )}
+            style={{ width: isWideSwatches ? "auto" : swatchesWidth + 800 }}
+          >
+            {isWideSwatches && children}
+
+            <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
+              {children}
+            </ObserveResize>
+
+            {isWideSwatches && children}
+          </div>
+        </MouseScrollable>
+      </ObserveResize>
+    </Clickable>
   );
 }
