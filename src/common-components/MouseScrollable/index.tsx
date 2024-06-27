@@ -1,5 +1,6 @@
 import { MouseEvent, ReactNode, useRef, useState } from "react";
 import { useCircularScroll } from "./useCircularScroll";
+import { useKeepScrollFactors } from "./useKeepScrollFactors";
 import { useScrollInertia } from "./useScrollInertia";
 
 export function MouseScrollable({
@@ -18,12 +19,8 @@ export function MouseScrollable({
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
   useScrollInertia({ ref, isMouseDown });
-  useCircularScroll({
-    ref,
-    isMouseDown,
-    circularScrollSizeX,
-    circularScrollSizeY,
-  });
+  useCircularScroll({ ref, isMouseDown, circularScrollSizeX, circularScrollSizeY });
+  const { onScroll } = useKeepScrollFactors({ ref, children });
 
   function onMouseMove(e: MouseEvent) {
     if (isMouseDown) {
@@ -42,6 +39,7 @@ export function MouseScrollable({
       onMouseUp={() => setIsMouseDown(false)}
       onMouseLeave={() => setIsMouseDown(false)}
       onMouseMove={onMouseMove}
+      onScroll={onScroll}
     >
       {children}
     </div>
