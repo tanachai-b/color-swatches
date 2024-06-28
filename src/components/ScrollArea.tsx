@@ -6,6 +6,8 @@ export function ScrollArea({ children }: { children: ReactNode }) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [swatchesWidth, setSwatchesWidth] = useState(0);
 
+  const isWideSwatches = swatchesWidth + 20 * 2 > containerWidth;
+
   return (
     <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
       <MouseScrollable
@@ -20,29 +22,28 @@ export function ScrollArea({ children }: { children: ReactNode }) {
 
           "overflow-auto",
         )}
-        circularScrollSizeX={swatchesWidth > 0 ? swatchesWidth + 20 : undefined}
+        circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}
       >
         <div
           className={cx(
             "flex",
             "flex-row",
+            "justify-center",
 
             "p-[20px]",
             "py-[150px]",
 
             "gap-[20px]",
           )}
+          style={{ width: isWideSwatches ? "auto" : swatchesWidth + 800 }}
         >
+          {isWideSwatches && children}
+
           <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
             {children}
           </ObserveResize>
 
-          {swatchesWidth + 20 * 2 > containerWidth && (
-            <>
-              {children}
-              {children}
-            </>
-          )}
+          {isWideSwatches && children}
         </div>
       </MouseScrollable>
     </ObserveResize>
