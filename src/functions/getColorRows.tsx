@@ -18,8 +18,7 @@ export function getColorRows(steps: number) {
 
 function createFactorArray<T>(length: number, onGetValues: (factor: number, index: number) => T) {
   return Array.from({ length }, (_, i) => {
-    const f = i / (length - 1);
-    const factor = isNaN(f) ? 0 : f;
+    const factor = i / (length - 1 || 1);
 
     return onGetValues(factor, i);
   });
