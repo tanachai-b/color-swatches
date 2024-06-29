@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { useMemo, useState } from "react";
-import { ColorSwatches, DetailPopup, DivisionsSelector, ScrollArea } from "./components";
+import { ColorSwatches, Copyright, DetailPopup, DivisionsSelector, ScrollArea } from "./components";
 import { getColorRows } from "./functions";
 
 export default function App() {
@@ -35,6 +35,8 @@ export default function App() {
       <DetailPopup color={selectedColor} />
 
       <DivisionsSelector selectedDivisions={divisions} onSelect={setDivisions} />
+
+      <Copyright />
     </div>
   );
 }
