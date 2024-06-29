@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { MouseEvent, MouseEventHandler, memo } from "react";
-import { getTextColor } from "src/functions";
+import { getTextColor } from "src/common-functions";
 import { Clickable } from "../common-components";
 
 export function ColorSwatches({

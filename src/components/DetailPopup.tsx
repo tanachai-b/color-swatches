@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import { Icon } from "src/common-components";
-import { getTextColor } from "src/functions";
+import { getTextColor } from "src/common-functions";
 
 export function DetailPopup({ color }: { color?: string }) {
   const [isCopied, setIsCopied] = useState<boolean>(false);

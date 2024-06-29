@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { useMemo, useState } from "react";
+import { getColorRows } from "./common-functions";
 import { ColorSwatches, Copyright, DetailPopup, DivisionsSelector, ScrollArea } from "./components";
-import { getColorRows } from "./functions";
 
 export default function App() {
   const [divisions, setDivisions] = useState<number>(8);
