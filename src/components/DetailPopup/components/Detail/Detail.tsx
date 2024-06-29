@@ -1,5 +1,6 @@
 import cx from "classnames";
-import { Bar, BarChart, Label, Value, hsv, rgb } from "./BarChart";
+import { hsv, rgb } from "src/common-functions";
+import { Bar, BarChart, Label, Value } from "./BarChart";
 
 export function Detail({ color }: { color?: string }) {
   const { r, g, b } = rgb(color ?? "#000000");
