@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { MouseEventHandler, ReactNode } from "react";
 import { Selector } from "src/common-components";
+import { countColors } from "src/common-functions";
 
 export function DivisionsSelector({
   selectedDivisions,
@@ -200,13 +201,4 @@ function SelectorItem({
       </div>
     </div>
   );
-}
-
-function countColors(divisions: number) {
-  const colorCount = Array.from({ length: divisions }).reduce<number>(
-    (colorCount, _, index) => colorCount + (divisions - index) * (index + 1) * 6,
-    0,
-  );
-
-  return colorCount;
 }
