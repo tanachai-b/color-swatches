@@ -16,17 +16,6 @@ export function DivisionsSelector({
     onSelect(division);
   }
 
-  const divisionLabels: { [key: number]: string } = {
-    1: "256 / 1",
-    2: "256 / 2",
-    4: "256 / 4",
-    8: "256 / 8",
-    16: "256 / 16",
-    3: "255 / 3",
-    5: "255 / 5",
-    15: "255 / 15",
-  };
-
   return (
     <div
       className={cx(
@@ -41,37 +30,34 @@ export function DivisionsSelector({
       <Selector
         label="Precisions"
         value={
-          <SelectorValue
-            divisionsLabel={divisionLabels[selectedDivisions]}
-            divisions={selectedDivisions}
-          />
+          <SelectorValue divisionsLabel={`${selectedDivisions}`} divisions={selectedDivisions} />
         }
         options={(closePopup) => (
-          <div className={cx("py-[10px]", "flex", "flex-col")}>
-            <SelectorHeader>HEX10 Colors</SelectorHeader>
+          <>
+            <SelectorHeader>HEX11 Base</SelectorHeader>
 
-            {[1, 2, 4, 8, 16].map((divisions) => (
+            {[1, 3, 5, 15].map((divisions) => (
               <SelectorItem
                 key={divisions}
-                divisionsLabel={divisionLabels[divisions]}
+                divisionsLabel={`${divisions}`}
                 divisions={divisions}
                 isSelected={divisions === selectedDivisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
             ))}
 
-            <SelectorHeader>HEX11 Colors</SelectorHeader>
+            <SelectorHeader>HEX10 Base</SelectorHeader>
 
-            {[3, 5, 15].map((divisions) => (
+            {[2, 4, 8, 16].map((divisions) => (
               <SelectorItem
                 key={divisions}
-                divisionsLabel={divisionLabels[divisions]}
+                divisionsLabel={`${divisions}`}
                 divisions={divisions}
                 isSelected={divisions === selectedDivisions}
                 onClick={() => onItemClick(closePopup, divisions)}
               />
             ))}
-          </div>
+          </>
         )}
       />
     </div>

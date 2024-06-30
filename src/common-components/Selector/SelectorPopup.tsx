@@ -8,15 +8,18 @@ export function SelectorPopup({ isOpen, children }: { isOpen: boolean; children:
         "absolute",
 
         "w-full",
-
         "top-full",
-        "mt-[10px]",
 
         "bg-[#101010c0]",
         "rounded-[10px]",
         "backdrop-blur-[20px]",
-
         "shadow-[0_20px_50px_0_#000000ff]",
+
+        "mt-[10px]",
+        "py-[10px]",
+
+        "flex",
+        "flex-col",
 
         isOpen ? "opacity-100" : "opacity-0",
         { "pointer-events-none": !isOpen },

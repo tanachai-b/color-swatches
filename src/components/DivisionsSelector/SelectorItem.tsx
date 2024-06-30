@@ -18,9 +18,6 @@ export function SelectorItem({
   return (
     <div
       className={cx(
-        "hover:bg-[#ffffff10]",
-        { "bg-[#ffffff10]": isSelected },
-
         "px-[30px]",
         "py-[15px]",
 
@@ -33,16 +30,19 @@ export function SelectorItem({
 
         "cursor-pointer",
 
+        "hover:bg-[#ffffff10]",
+        { "bg-[#ffffff10]": isSelected },
         "transition-all",
       )}
       onClick={onClick}
     >
       <div
         className={cx(
-          "w-[60px]",
+          "w-[2ch]",
 
           "text-[#ffffffc0]",
           "text-[15px]",
+          "text-right",
         )}
       >
         {divisionsLabel}
@@ -50,13 +50,14 @@ export function SelectorItem({
 
       <div
         className={cx(
-          "w-[80px]",
+          "w-[11ch]",
 
           "text-[#ffffff60]",
           "text-[12px]",
+          "text-right",
         )}
       >
-        ({colorCount.toLocaleString()} Colors)
+        {colorCount.toLocaleString()} Colors
       </div>
     </div>
   );
