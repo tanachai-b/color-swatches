@@ -1,51 +1,37 @@
 import cx from "classnames";
-import { MouseEventHandler } from "react";
+import { ReactNode } from "react";
 import { countColors } from "src/common-functions";
 
-export function SelectorItem({
-  divisionsLabel,
-  divisions,
-  isSelected,
-  onClick,
+export function SelectorValue({
+  precisionLabel,
+  precision,
 }: {
-  divisionsLabel: string;
-  divisions: number;
-  isSelected: boolean;
-  onClick: MouseEventHandler<HTMLDivElement>;
-}) {
-  const colorCount = countColors(divisions);
+  precisionLabel: string;
+  precision: number;
+}): ReactNode {
+  const colorCount = countColors(precision);
 
   return (
     <div
       className={cx(
-        "px-[30px]",
-        "py-[15px]",
-
         "flex",
         "flex-row",
 
         "justify-center",
         "items-center",
         "gap-[10px]",
-
-        "cursor-pointer",
-
-        "hover:bg-[#ffffff10]",
-        { "bg-[#ffffff10]": isSelected },
-        "transition-all",
       )}
-      onClick={onClick}
     >
       <div
         className={cx(
           "w-[2ch]",
 
-          "text-[#ffffffc0]",
-          "text-[15px]",
+          "text-[#ffffff]",
+          "text-[20px]",
           "text-right",
         )}
       >
-        {divisionsLabel}
+        {precisionLabel}
       </div>
 
       <div

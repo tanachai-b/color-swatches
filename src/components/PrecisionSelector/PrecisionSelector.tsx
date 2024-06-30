@@ -1,0 +1,65 @@
+import cx from "classnames";
+import { Selector } from "src/common-components";
+import { SelectorHeader } from "./SelectorHeader";
+import { SelectorItem } from "./SelectorItem";
+import { SelectorValue } from "./SelectorValue";
+
+export function PrecisionSelector({
+  selectedPrecision,
+  onSelect,
+}: {
+  selectedPrecision: number;
+  onSelect: (precision: number) => void;
+}) {
+  function onItemClick(closePopup: () => void, precision: number) {
+    closePopup();
+    onSelect(precision);
+  }
+
+  return (
+    <div
+      className={cx(
+        "absolute",
+
+        "place-self-center",
+        "top-[50px]",
+
+        "w-[360px]",
+      )}
+    >
+      <Selector
+        label="Precision"
+        value={
+          <SelectorValue precisionLabel={`${selectedPrecision}`} precision={selectedPrecision} />
+        }
+        options={(closePopup) => (
+          <>
+            <SelectorHeader>HEX11 Base</SelectorHeader>
+
+            {[1, 3, 5, 15].map((precision) => (
+              <SelectorItem
+                key={precision}
+                precisionLabel={`${precision}`}
+                precision={precision}
+                isSelected={precision === selectedPrecision}
+                onClick={() => onItemClick(closePopup, precision)}
+              />
+            ))}
+
+            <SelectorHeader>HEX10 Base</SelectorHeader>
+
+            {[2, 4, 8, 16].map((precision) => (
+              <SelectorItem
+                key={precision}
+                precisionLabel={`${precision}`}
+                precision={precision}
+                isSelected={precision === selectedPrecision}
+                onClick={() => onItemClick(closePopup, precision)}
+              />
+            ))}
+          </>
+        )}
+      />
+    </div>
+  );
+}

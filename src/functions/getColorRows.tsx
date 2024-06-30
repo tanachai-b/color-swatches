@@ -1,8 +1,8 @@
-export function getColorRows(steps: number) {
-  const rgbColorRows = createFactorArray(steps + 1, (saturation, rowIndex) =>
-    createFactorArray((steps - rowIndex) * 6 + 1, (hue) =>
-      createFactorArray(rowIndex + 1, (brightness) =>
-        add(multiply(getRgbColorFromHue(hue), 1 - saturation), brightness * saturation),
+export function getColorRows(precision: number) {
+  const rgbColorRows = factorArray(precision + 1, (saturation, rowIndex) =>
+    factorArray((precision - rowIndex) * 6 + 1, (hue) =>
+      factorArray(rowIndex + 1, (brightness) =>
+        add(multiply(convertToRgb(hue), 1 - saturation), brightness * saturation),
       ),
     )
       .slice(0, -1)
@@ -10,13 +10,13 @@ export function getColorRows(steps: number) {
   ).slice(0, -1);
 
   const colorRows = rgbColorRows.map((colorRow) =>
-    colorRow.map((rgbColor) => convertRgbToHexColor(rgbColor, steps)),
+    colorRow.map((rgbColor) => convertToHex(rgbColor, precision)),
   );
 
   return colorRows;
 }
 
-function createFactorArray<T>(length: number, onGetValues: (factor: number, index: number) => T) {
+function factorArray<T>(length: number, onGetValues: (factor: number, index: number) => T) {
   return Array.from({ length }, (_, i) => {
     const factor = i / (length - 1 || 1);
 
@@ -24,9 +24,9 @@ function createFactorArray<T>(length: number, onGetValues: (factor: number, inde
   });
 }
 
-function getRgbColorFromHue(factor: number) {
-  const section = Math.floor(factor * 6) % 6;
-  const gradient = -Math.abs((factor % (1 / 3)) * 3 * 2 - 1) + 1;
+function convertToRgb(hue: number) {
+  const section = Math.floor(hue * 6) % 6;
+  const gradient = -Math.abs((hue % (1 / 3)) * 3 * 2 - 1) + 1;
 
   if (section === 0) {
     return { red: 1, green: gradient, blue: 0 };
@@ -64,12 +64,12 @@ function multiply(
   };
 }
 
-function convertRgbToHexColor(
+function convertToHex(
   { red, green, blue }: { red: number; green: number; blue: number },
-  steps: number = 256,
+  precision: number = 255,
 ) {
-  const isDivisible255 = Math.round(255 / steps) === 255 / steps;
-  const maxValue = isDivisible255 ? 255 : 256;
+  const isDivisible256 = Math.round(256 / precision) === 256 / precision;
+  const maxValue = isDivisible256 ? 256 : 255;
 
   const red1 = Math.min(Math.round(red * maxValue), 255);
   const green1 = Math.min(Math.round(green * maxValue), 255);

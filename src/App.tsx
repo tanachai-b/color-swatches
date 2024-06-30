@@ -1,12 +1,12 @@
 import cx from "classnames";
 import { useMemo, useState } from "react";
-import { ColorSwatches, Copyright, DetailPopup, DivisionsSelector, ScrollArea } from "./components";
+import { ColorSwatches, Copyright, DetailPopup, PrecisionSelector, ScrollArea } from "./components";
 import { getColorRows } from "./functions";
 
 export default function App() {
-  const [divisions, setDivisions] = useState<number>(8);
+  const [precision, setPrecision] = useState<number>(8);
 
-  const colorRows = useMemo(() => getColorRows(divisions), [divisions]);
+  const colorRows = useMemo(() => getColorRows(precision), [precision]);
 
   const [selectedColor, setSelectedColor] = useState<string>();
 
@@ -34,7 +34,7 @@ export default function App() {
 
       <DetailPopup color={selectedColor} />
 
-      <DivisionsSelector selectedDivisions={divisions} onSelect={setDivisions} />
+      <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
 
       <Copyright />
     </div>
