@@ -1,20 +1,17 @@
 import cx from "classnames";
 import { MouseEventHandler } from "react";
-import { countColors } from "src/common-functions";
 
 export function SelectorItem({
-  precisionLabel,
   precision,
+  colorCount,
   isSelected,
   onClick,
 }: {
-  precisionLabel: string;
   precision: number;
+  colorCount: number;
   isSelected: boolean;
   onClick: MouseEventHandler<HTMLDivElement>;
 }) {
-  const colorCount = countColors(precision);
-
   return (
     <div
       className={cx(
@@ -45,7 +42,7 @@ export function SelectorItem({
           "text-right",
         )}
       >
-        {precisionLabel}
+        {precision}
       </div>
 
       <div

@@ -1,16 +1,12 @@
 import cx from "classnames";
-import { ReactNode } from "react";
-import { countColors } from "src/common-functions";
 
 export function SelectorValue({
-  precisionLabel,
   precision,
+  colorCount,
 }: {
-  precisionLabel: string;
   precision: number;
-}): ReactNode {
-  const colorCount = countColors(precision);
-
+  colorCount: number;
+}) {
   return (
     <div
       className={cx(
@@ -31,7 +27,7 @@ export function SelectorValue({
           "text-right",
         )}
       >
-        {precisionLabel}
+        {precision}
       </div>
 
       <div

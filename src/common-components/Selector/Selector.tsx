@@ -7,11 +7,11 @@ import { SelectorPopup } from "./SelectorPopup";
 export function Selector({
   label,
   value,
-  options,
+  popup,
 }: {
   label: string;
   value: ReactNode;
-  options: (closePopup: () => void) => ReactNode;
+  popup: (closePopup: () => void) => ReactNode;
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
@@ -23,7 +23,7 @@ export function Selector({
         {value}
       </SelectorButton>
 
-      <SelectorPopup isOpen={isPopupOpen}>{options(() => setIsPopupOpen(false))}</SelectorPopup>
+      <SelectorPopup isOpen={isPopupOpen}>{popup(() => setIsPopupOpen(false))}</SelectorPopup>
     </div>
   );
 }

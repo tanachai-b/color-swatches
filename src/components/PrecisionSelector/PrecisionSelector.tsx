@@ -1,5 +1,6 @@
 import cx from "classnames";
 import { Selector } from "src/common-components";
+import { countColors } from "src/common-functions";
 import { SelectorHeader } from "./SelectorHeader";
 import { SelectorItem } from "./SelectorItem";
 import { SelectorValue } from "./SelectorValue";
@@ -30,17 +31,20 @@ export function PrecisionSelector({
       <Selector
         label="Precision"
         value={
-          <SelectorValue precisionLabel={`${selectedPrecision}`} precision={selectedPrecision} />
+          <SelectorValue
+            precision={selectedPrecision}
+            colorCount={countColors(selectedPrecision)}
+          />
         }
-        options={(closePopup) => (
+        popup={(closePopup) => (
           <>
             <SelectorHeader>HEX11 Base</SelectorHeader>
 
             {[1, 3, 5, 15].map((precision) => (
               <SelectorItem
                 key={precision}
-                precisionLabel={`${precision}`}
                 precision={precision}
+                colorCount={countColors(precision)}
                 isSelected={precision === selectedPrecision}
                 onClick={() => onItemClick(closePopup, precision)}
               />
@@ -51,8 +55,8 @@ export function PrecisionSelector({
             {[2, 4, 8, 16].map((precision) => (
               <SelectorItem
                 key={precision}
-                precisionLabel={`${precision}`}
                 precision={precision}
+                colorCount={countColors(precision)}
                 isSelected={precision === selectedPrecision}
                 onClick={() => onItemClick(closePopup, precision)}
               />
