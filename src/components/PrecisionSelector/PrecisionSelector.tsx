@@ -24,8 +24,6 @@ export function PrecisionSelector({
 
         "place-self-center",
         "top-[50px]",
-
-        "w-[360px]",
       )}
     >
       <Selector
