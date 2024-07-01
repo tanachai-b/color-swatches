@@ -1,8 +1,8 @@
 export function getColorRows(precision: number) {
-  const rgbColorRows = factorArray(precision + 1, (saturation, rowIndex) =>
+  const rgbColorRows = factorArray(precision + 1, (chroma, rowIndex) =>
     factorArray((precision - rowIndex) * 6 + 1, (hue) =>
-      factorArray(rowIndex + 1, (brightness) =>
-        add(multiply(convertToRgb(hue), 1 - saturation), brightness * saturation),
+      factorArray(rowIndex + 1, (lightness) =>
+        add(multiply(convertToRgb(hue), 1 - chroma), lightness * chroma),
       ),
     )
       .slice(0, -1)
