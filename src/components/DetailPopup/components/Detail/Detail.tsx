@@ -1,10 +1,11 @@
 import cx from "classnames";
-import { toHcl, toHsl, toHsv, toRgb } from "src/common-functions";
+import { toHcl, toHcv, toHsl, toHsv, toRgb } from "src/common-functions";
 import { Bar, BarChart, Label, Value } from "./BarChart";
 
 export function Detail({ color }: { color?: string }) {
   const rgb = toRgb(color ?? "#000000");
   const hcl = toHcl(color ?? "#000000");
+  const hcv = toHcv(color ?? "#000000");
   const hsl = toHsl(color ?? "#000000");
   const hsv = toHsv(color ?? "#000000");
 
@@ -48,6 +49,20 @@ export function Detail({ color }: { color?: string }) {
         <Label>Lightness</Label>
         <Bar value={hcl.l / 100} />
         <Value value={hcl.l} unit={"%"} />
+      </BarChart>
+
+      <BarChart>
+        <Label>Hue</Label>
+        <Bar value={hcv.h / 360} />
+        <Value value={hcv.h} unit={"°"} />
+
+        <Label>Chroma</Label>
+        <Bar value={hcv.c / 100} />
+        <Value value={hcv.c} unit={"%"} />
+
+        <Label>Value</Label>
+        <Bar value={hcv.l / 100} />
+        <Value value={hcv.l} unit={"%"} />
       </BarChart>
 
       <BarChart>
