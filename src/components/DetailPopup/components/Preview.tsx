@@ -5,6 +5,8 @@ export function Preview({ color }: { color?: string }) {
   return (
     <div
       className={cx(
+        "shrink-0",
+
         "h-[150px]",
 
         "grid",

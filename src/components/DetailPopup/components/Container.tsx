@@ -6,30 +6,41 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
     <div
       className={cx(
         "absolute",
+        "size-full",
+        "pointer-events-none",
 
-        "place-self-center",
-        "right-[50px]",
+        "p-[50px]",
 
-        "w-[300px]",
-
-        "bg-[#101010c0]",
-        "rounded-[10px]",
-        "backdrop-blur-[20px]",
-
-        "shadow-[0_20px_50px_0_#000000ff]",
-
-        isOpen ? "opacity-100" : "opacity-0",
-        { "pointer-events-none": !isOpen },
-
-        "transition-all",
-
-        "overflow-auto",
-
-        "flex",
-        "flex-col",
+        "grid",
       )}
     >
-      {children}
+      <div
+        className={cx(
+          "justify-self-end",
+          "self-center",
+
+          "w-[300px]",
+          "max-h-full",
+
+          "bg-[#101010c0]",
+          "rounded-[10px]",
+          "backdrop-blur-[20px]",
+
+          "shadow-[0_20px_50px_0_#000000ff]",
+
+          isOpen ? "opacity-100" : "opacity-0",
+          isOpen ? "pointer-events-auto" : "pointer-events-none",
+
+          "transition-all",
+
+          "flex",
+          "flex-col",
+
+          "overflow-hidden",
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

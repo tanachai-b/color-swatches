@@ -12,6 +12,8 @@ export function CopyButton({
   return (
     <div
       className={cx(
+        "shrink-0",
+
         "flex",
         "flex-row",
 
