@@ -1,9 +1,10 @@
 import cx from "classnames";
-import { toHsv, toRgb } from "src/common-functions";
+import { toHsl, toHsv, toRgb } from "src/common-functions";
 import { Bar, BarChart, Label, Value } from "./BarChart";
 
 export function Detail({ color }: { color?: string }) {
   const rgb = toRgb(color ?? "#000000");
+  const hsl = toHsl(color ?? "#000000");
   const hsv = toHsv(color ?? "#000000");
 
   return (
@@ -32,6 +33,20 @@ export function Detail({ color }: { color?: string }) {
         <Label>Blue</Label>
         <Bar value={rgb.b / 255} />
         <Value value={rgb.b} isInteger={true} />
+      </BarChart>
+
+      <BarChart>
+        <Label>Hue</Label>
+        <Bar value={hsl.h / 360} />
+        <Value value={hsl.h} unit={"°"} />
+
+        <Label>Saturation</Label>
+        <Bar value={hsl.s / 100} />
+        <Value value={hsl.s} unit={"%"} />
+
+        <Label>Lightness</Label>
+        <Bar value={hsl.l / 100} />
+        <Value value={hsl.l} unit={"%"} />
       </BarChart>
 
       <BarChart>
