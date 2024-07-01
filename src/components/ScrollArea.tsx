@@ -18,42 +18,47 @@ export function ScrollArea({
   return (
     <Clickable onClick={onClick}>
       <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
-        <MouseScrollable
+        <div
           className={cx(
             "absolute",
-
             "size-full",
+
             "bg-[#000000]",
-
-            "grid",
-            "place-items-center",
-
-            "overflow-auto",
           )}
-          circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}
         >
-          <div
-            className={cx(
-              "flex",
-              "flex-row",
-              "justify-center",
+          <MouseScrollable circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}>
+            <div
+              className={cx(
+                "size-full",
 
-              "p-[20px]",
-              "py-[150px]",
+                "grid",
+                "place-items-center",
+              )}
+            >
+              <div
+                className={cx(
+                  "flex",
+                  "flex-row",
+                  "justify-center",
 
-              "gap-[20px]",
-            )}
-            style={{ width: isWideSwatches ? "auto" : swatchesWidth + 800 }}
-          >
-            {isWideSwatches && children}
+                  "p-[20px]",
+                  "py-[150px]",
 
-            <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
-              {children}
-            </ObserveResize>
+                  "gap-[20px]",
+                )}
+                style={{ width: isWideSwatches ? "auto" : swatchesWidth + 800 }}
+              >
+                {isWideSwatches && children}
 
-            {isWideSwatches && children}
-          </div>
-        </MouseScrollable>
+                <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
+                  {children}
+                </ObserveResize>
+
+                {isWideSwatches && children}
+              </div>
+            </div>
+          </MouseScrollable>
+        </div>
       </ObserveResize>
     </Clickable>
   );
