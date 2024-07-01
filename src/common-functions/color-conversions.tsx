@@ -6,6 +6,19 @@ export function toRgb(hex: string) {
   return { r, g, b };
 }
 
+export function toHcl(hex: string) {
+  const { r, g, b } = toRgb(hex);
+
+  const min = Math.min(r, g, b);
+  const max = Math.max(r, g, b);
+
+  const h = hue(r, g, b, max);
+  const c = ((max - min) / 255) * 100;
+  const l = ((min + max) / 2 / 255) * 100;
+
+  return { h, c, l };
+}
+
 export function toHsl(hex: string) {
   const { r, g, b } = toRgb(hex);
 
