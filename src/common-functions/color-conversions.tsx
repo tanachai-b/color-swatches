@@ -1,4 +1,4 @@
-export function rgb(hex: string) {
+export function toRgb(hex: string) {
   const r = parseInt(hex.substring(1, 3), 16);
   const g = parseInt(hex.substring(3, 5), 16);
   const b = parseInt(hex.substring(5, 7), 16);
@@ -6,13 +6,22 @@ export function rgb(hex: string) {
   return { r, g, b };
 }
 
-export function hsv(hex: string) {
-  const { r, g, b } = rgb(hex);
+export function toHsv(hex: string) {
+  const { r, g, b } = toRgb(hex);
 
   const min = Math.min(r, g, b);
   const max = Math.max(r, g, b);
 
+  const h = hue(r, g, b, max);
+  const s = ((max - min) / (max || 1)) * 100;
+  const v = (max / 255) * 100;
+
+  return { h, s, v };
+}
+
+function hue(r: number, g: number, b: number, max: number) {
   let h = 0;
+
   if (r === g && g === b) {
     h = 0;
   } else if (r === max) {
@@ -22,12 +31,10 @@ export function hsv(hex: string) {
   } else if (b === max) {
     h = 240 + hsvSection(b, g, r);
   }
+
   h = (h + 360) % 360;
 
-  const s = ((max - min) / (max || 1)) * 100;
-  const v = (max / 255) * 100;
-
-  return { h, s, v };
+  return (h + 360) % 360;
 
   function hsvSection(max: number, desc: number, asc: number) {
     if (desc > asc) {

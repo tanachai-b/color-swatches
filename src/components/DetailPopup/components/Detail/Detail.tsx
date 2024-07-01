@@ -1,10 +1,10 @@
 import cx from "classnames";
-import { hsv, rgb } from "src/common-functions";
+import { toHsv, toRgb } from "src/common-functions";
 import { Bar, BarChart, Label, Value } from "./BarChart";
 
 export function Detail({ color }: { color?: string }) {
-  const { r, g, b } = rgb(color ?? "#000000");
-  const { h, s, v } = hsv(color ?? "#000000");
+  const rgb = toRgb(color ?? "#000000");
+  const hsv = toHsv(color ?? "#000000");
 
   return (
     <div
@@ -22,30 +22,30 @@ export function Detail({ color }: { color?: string }) {
     >
       <BarChart>
         <Label>Red</Label>
-        <Bar value={r / 255} />
-        <Value value={r} isInteger={true} />
+        <Bar value={rgb.r / 255} />
+        <Value value={rgb.r} isInteger={true} />
 
         <Label>Green</Label>
-        <Bar value={g / 255} />
-        <Value value={g} isInteger={true} />
+        <Bar value={rgb.g / 255} />
+        <Value value={rgb.g} isInteger={true} />
 
         <Label>Blue</Label>
-        <Bar value={b / 255} />
-        <Value value={b} isInteger={true} />
+        <Bar value={rgb.b / 255} />
+        <Value value={rgb.b} isInteger={true} />
       </BarChart>
 
       <BarChart>
         <Label>Hue</Label>
-        <Bar value={h / 360} />
-        <Value value={h} unit={"°"} />
+        <Bar value={hsv.h / 360} />
+        <Value value={hsv.h} unit={"°"} />
 
         <Label>Saturation</Label>
-        <Bar value={s / 100} />
-        <Value value={s} unit={"%"} />
+        <Bar value={hsv.s / 100} />
+        <Value value={hsv.s} unit={"%"} />
 
-        <Label>Brightness</Label>
-        <Bar value={v / 100} />
-        <Value value={v} unit={"%"} />
+        <Label>Value</Label>
+        <Bar value={hsv.v / 100} />
+        <Value value={hsv.v} unit={"%"} />
       </BarChart>
     </div>
   );
