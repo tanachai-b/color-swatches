@@ -1,15 +1,14 @@
+import cx from "classnames";
 import { MouseEvent, ReactNode, useRef, useState } from "react";
 import { useCircularScroll } from "./useCircularScroll";
 import { useKeepScrollFactors } from "./useKeepScrollFactors";
 import { useScrollInertia } from "./useScrollInertia";
 
 export function MouseScrollable({
-  className,
   circularScrollSizeX,
   circularScrollSizeY,
   children,
 }: {
-  className: string;
   circularScrollSizeX?: number;
   circularScrollSizeY?: number;
   children: ReactNode;
@@ -34,7 +33,7 @@ export function MouseScrollable({
   return (
     <div
       ref={ref}
-      className={className}
+      className={cx("size-full", "overflow-auto")}
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}
       onMouseLeave={() => setIsMouseDown(false)}
