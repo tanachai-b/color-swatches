@@ -55,9 +55,8 @@ function Tab({
 
         "text-center",
 
-        "bg-[#ffffff10]",
+        isSelected ? "bg-[#ffffff00]" : "bg-[#ffffff10]",
         "hover:bg-[#ffffff00]",
-        { "bg-[#ffffff00]": isSelected },
 
         { "text-[#ffffffc0]": isSelected },
         "hover:text-[#ffffffc0]",
