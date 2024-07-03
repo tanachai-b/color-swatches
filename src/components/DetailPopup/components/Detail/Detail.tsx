@@ -1,9 +1,13 @@
 import cx from "classnames";
-import { MouseScrollable } from "src/common-components";
+import { useState } from "react";
 import { toHcl, toHcv, toHsl, toHsv, toRgb } from "src/common-functions";
 import { Bar, BarChart, Label, Value } from "./BarChart";
+import { Tabs } from "./Tabs";
 
 export function Detail({ color }: { color?: string }) {
+  const options = ["RGB", "HCL", "HCV", "HSL", "HSV"];
+  const [selected, setSelected] = useState<string>("RGB");
+
   const rgb = toRgb(color ?? "#000000");
   const hcl = toHcl(color ?? "#000000");
   const hcv = toHcv(color ?? "#000000");
@@ -15,25 +19,19 @@ export function Detail({ color }: { color?: string }) {
       className={cx(
         "grow",
 
-        "overflow-hidden",
-        "grid",
+        "flex",
+        "flex-col",
       )}
     >
-      <MouseScrollable>
-        <div
-          className={cx(
-            "p-[20px]",
-            "py-[30px]",
-            "gap-[30px]",
+      <Tabs
+        options={options}
+        selected={options.indexOf(selected)}
+        onSelect={(index) => setSelected(options[index])}
+      />
 
-            "flex",
-            "flex-col",
-
-            "text-[#ffffff80]",
-            "text-[13px]",
-          )}
-        >
-          <BarChart>
+      <div className={cx("p-[30px]")}>
+        {selected === "RGB" && (
+          <BarChart key="bar-chart">
             <Label>Red</Label>
             <Bar value={rgb.r / 255} />
             <Value value={rgb.r} isInteger={true} />
@@ -46,8 +44,10 @@ export function Detail({ color }: { color?: string }) {
             <Bar value={rgb.b / 255} />
             <Value value={rgb.b} isInteger={true} />
           </BarChart>
+        )}
 
-          <BarChart>
+        {selected === "HCL" && (
+          <BarChart key="bar-chart">
             <Label>Hue</Label>
             <Bar value={hcl.h / 360} />
             <Value value={hcl.h} unit={"°"} />
@@ -60,8 +60,10 @@ export function Detail({ color }: { color?: string }) {
             <Bar value={hcl.l / 100} />
             <Value value={hcl.l} unit={"%"} />
           </BarChart>
+        )}
 
-          <BarChart>
+        {selected === "HCV" && (
+          <BarChart key="bar-chart">
             <Label>Hue</Label>
             <Bar value={hcv.h / 360} />
             <Value value={hcv.h} unit={"°"} />
@@ -74,8 +76,10 @@ export function Detail({ color }: { color?: string }) {
             <Bar value={hcv.l / 100} />
             <Value value={hcv.l} unit={"%"} />
           </BarChart>
+        )}
 
-          <BarChart>
+        {selected === "HSL" && (
+          <BarChart key="bar-chart">
             <Label>Hue</Label>
             <Bar value={hsl.h / 360} />
             <Value value={hsl.h} unit={"°"} />
@@ -88,8 +92,10 @@ export function Detail({ color }: { color?: string }) {
             <Bar value={hsl.l / 100} />
             <Value value={hsl.l} unit={"%"} />
           </BarChart>
+        )}
 
-          <BarChart>
+        {selected === "HSV" && (
+          <BarChart key="bar-chart">
             <Label>Hue</Label>
             <Bar value={hsv.h / 360} />
             <Value value={hsv.h} unit={"°"} />
@@ -102,8 +108,8 @@ export function Detail({ color }: { color?: string }) {
             <Bar value={hsv.v / 100} />
             <Value value={hsv.v} unit={"%"} />
           </BarChart>
-        </div>
-      </MouseScrollable>
+        )}
+      </div>
     </div>
   );
 }
