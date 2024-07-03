@@ -3,7 +3,18 @@ import { ReactNode } from "react";
 
 export function BarChart({ children }: { children: ReactNode }) {
   return (
-    <div className={cx("grid", "grid-flow-row", "grid-cols-[auto,1fr,auto]", "gap-[10px]")}>
+    <div
+      className={cx(
+        "grid",
+        "grid-flow-row",
+        "grid-cols-[auto,1fr,auto]",
+
+        "gap-[10px]",
+
+        "text-[#ffffff80]",
+        "text-[13px]",
+      )}
+    >
       {children}
     </div>
   );
@@ -15,13 +26,30 @@ export function Label({ children }: { children: ReactNode }) {
 
 export function Bar({ value }: { value: number }) {
   return (
-    <div className={cx("grid", "items-center", "relative")}>
-      <div className={cx("w-full", "h-[5px]", "bg-[#ffffff10]", "rounded-full")} />
+    <div
+      className={cx(
+        "grid",
+        "items-center",
+
+        "relative",
+      )}
+    >
+      <div
+        className={cx(
+          "w-full",
+          "h-[5px]",
+
+          "bg-[#ffffff10]",
+          "rounded-full",
+        )}
+      />
       <div
         className={cx(
           "absolute",
+
           "w-full",
           "h-[5px]",
+
           "bg-[#ffffff60]",
           "rounded-full",
           "transition-all",
