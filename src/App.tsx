@@ -38,6 +38,8 @@ function Container({ children }: { children: ReactNode }) {
       className={cx(
         "size-full",
 
+        "bg-[#000000]",
+
         "grid",
         "relative",
 

@@ -18,14 +18,7 @@ export function ScrollArea({
   return (
     <Clickable onClick={onClick}>
       <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
-        <div
-          className={cx(
-            "absolute",
-            "size-full",
-
-            "bg-[#000000]",
-          )}
-        >
+        <div className={cx("absolute", "size-full")}>
           <MouseScrollable circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}>
             <div
               className={cx(
