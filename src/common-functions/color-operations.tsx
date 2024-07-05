@@ -41,6 +41,17 @@ export function multiply(
   };
 }
 
+export function round(
+  { red, green, blue }: { red: number; green: number; blue: number },
+  precision: number,
+) {
+  return {
+    red: Math.floor(red * (precision + 1)) / precision,
+    green: Math.floor(green * (precision + 1)) / precision,
+    blue: Math.floor(blue * (precision + 1)) / precision,
+  };
+}
+
 export function convertToHex(
   { red, green, blue }: { red: number; green: number; blue: number },
   precision: number = 255,
