@@ -1,6 +1,13 @@
 import cx from "classnames";
 import { ReactNode, useMemo, useState } from "react";
-import { ColorSwatches, Copyright, DetailPopup, PrecisionSelector, ScrollArea } from "./components";
+import {
+  ColorSwatches,
+  Copyright,
+  DetailPopup,
+  PrecisionSelector,
+  ScrollArea,
+  TopBar,
+} from "./components";
 import { getColorRows } from "./functions";
 
 export default function App() {
@@ -25,7 +32,9 @@ export default function App() {
 
       <DetailPopup color={selectedColor} />
 
-      <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
+      <TopBar>
+        <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
+      </TopBar>
 
       <Copyright />
     </Container>
