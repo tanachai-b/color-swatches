@@ -13,7 +13,7 @@ export function Tabs({
   return (
     <Container>
       {options.map((option, index) => (
-        <Tab isSelected={selected === index} onClick={() => onSelect(index)}>
+        <Tab key={index} isSelected={selected === index} onClick={() => onSelect(index)}>
           {option}
         </Tab>
       ))}
