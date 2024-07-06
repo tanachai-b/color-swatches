@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { ColorSwatches, Copyright, DetailPopup, PrecisionSelector, ScrollArea } from "./components";
 import { getColorRows } from "./functions";
 
@@ -11,16 +11,7 @@ export default function App() {
   const [selectedColor, setSelectedColor] = useState<string>();
 
   return (
-    <div
-      className={cx(
-        "size-full",
-
-        "grid",
-        "relative",
-
-        "select-none",
-      )}
-    >
+    <Container>
       <ScrollArea onClick={() => setSelectedColor(undefined)}>
         <ColorSwatches
           colorRows={colorRows}
@@ -37,6 +28,23 @@ export default function App() {
       <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
 
       <Copyright />
+    </Container>
+  );
+}
+
+function Container({ children }: { children: ReactNode }) {
+  return (
+    <div
+      className={cx(
+        "size-full",
+
+        "grid",
+        "relative",
+
+        "select-none",
+      )}
+    >
+      {children}
     </div>
   );
 }
