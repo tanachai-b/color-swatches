@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { ReactNode, useMemo, useState } from "react";
 import {
+  ColorPickerButton,
   ColorSwatches,
   Copyright,
   DetailPopup,
@@ -16,6 +17,8 @@ export default function App() {
   const colorRows = useMemo(() => getColorRows(precision), [precision]);
 
   const [selectedColor, setSelectedColor] = useState<string>();
+
+  const [isOpenPicker, setIsOpenPicker] = useState<boolean>(false);
 
   return (
     <Container>
@@ -34,6 +37,8 @@ export default function App() {
 
       <TopBar>
         <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
+
+        <ColorPickerButton onClick={() => setIsOpenPicker(true)} />
       </TopBar>
 
       <Copyright />
