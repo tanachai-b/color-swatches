@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { ReactNode, useMemo, useState } from "react";
 import {
+  ColorPicker,
   ColorPickerButton,
   ColorSwatches,
   Copyright,
@@ -40,6 +41,14 @@ export default function App() {
 
         <ColorPickerButton onClick={() => setIsOpenPicker(true)} />
       </TopBar>
+
+      <ColorPicker
+        isOpen={isOpenPicker}
+        precision={precision}
+        initialColor={selectedColor}
+        onChange={setSelectedColor}
+        onClickBackdrop={() => setIsOpenPicker(false)}
+      />
 
       <Copyright />
     </Container>
