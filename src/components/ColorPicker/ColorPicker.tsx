@@ -28,51 +28,25 @@ export function ColorPicker({
   onChange: (color: string) => void;
   onClickBackdrop: () => void;
 }) {
-  const [angle, setAngle] = useState(0);
-  const [radius, setRadius] = useState(0);
-  const [height, setHeight] = useState(0);
+  const {
+    angle,
+    radius,
+    height,
 
-  const previewColor = useMemo(() => getColor(angle, radius, height), [angle, radius, height]);
-  const { h, c, l } = useMemo(() => toHcl(previewColor), [previewColor]);
+    previewColor,
+    hcl,
 
-  function getColor(angle: number, radius: number, height: number) {
-    return convertToHex(
-      round(add(multiply(convertToRgb(angle), radius), height * (1 - radius)), precision),
-      precision,
-    );
-  }
+    onDragWheel,
+    onDragBlock,
 
-  useEffect(() => {
-    if (!isOpen) return;
-    if (initialColor == null) return;
-
-    const { h, c, l } = toHcl(initialColor);
-
-    const angle = h / 360;
-    const radius = c / 100;
-
-    const height0 = 1 - (100 - l - c / 2) / (100 - c || 1);
-    const height = Math.round(height0 * 10 ** 10) / 10 ** 10;
-
-    setAngle(angle);
-    setRadius(radius);
-    setHeight(height);
-  }, [isOpen]);
-
-  function onDragWheel(angle: number, radius: number): void {
-    setAngle(angle);
-    setRadius(radius);
-  }
-
-  function onDragBlock(radius: number, height: number): void {
-    setRadius(radius);
-    setHeight(height);
-  }
-
-  function handleClickBackdrop() {
-    onChange(previewColor);
-    onClickBackdrop();
-  }
+    handleClickBackdrop,
+  } = useColorPicker({
+    isOpen,
+    precision,
+    initialColor,
+    onChange,
+    onClickBackdrop,
+  });
 
   return (
     <Container isOpen={isOpen}>
@@ -100,17 +74,17 @@ export function ColorPicker({
             <Detail>
               <Field>
                 <Label>Hue</Label>
-                <Value>{h.toFixed(1) + " °"}</Value>
+                <Value>{hcl.h.toFixed(1) + " °"}</Value>
               </Field>
 
               <Field>
                 <Label>Chroma</Label>
-                <Value>{c.toFixed(1) + " %"}</Value>
+                <Value>{hcl.c.toFixed(1) + " %"}</Value>
               </Field>
 
               <Field>
                 <Label>Lightness</Label>
-                <Value>{l.toFixed(1) + " %"}</Value>
+                <Value>{hcl.l.toFixed(1) + " %"}</Value>
               </Field>
             </Detail>
           </div>
@@ -118,4 +92,77 @@ export function ColorPicker({
       </Card>
     </Container>
   );
+}
+
+function useColorPicker({
+  isOpen,
+  precision,
+  initialColor,
+  onChange,
+  onClickBackdrop,
+}: {
+  isOpen: boolean;
+  precision: number;
+  initialColor?: string;
+  onChange: (color: string) => void;
+  onClickBackdrop: () => void;
+}) {
+  const [angle, setAngle] = useState(0);
+  const [radius, setRadius] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const previewColor = useMemo(() => getColor(angle, radius, height), [angle, radius, height]);
+  const hcl = useMemo(() => toHcl(previewColor), [previewColor]);
+
+  function getColor(angle: number, radius: number, height: number) {
+    return convertToHex(
+      round(add(multiply(convertToRgb(angle), radius), height * (1 - radius)), precision),
+      precision,
+    );
+  }
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const { h, c, l } = toHcl(initialColor ?? "#000000");
+
+    const angle = h / 360;
+    const radius = c / 100;
+
+    const height0 = 1 - (100 - l - c / 2) / (100 - c || 1);
+    const height = Math.round(height0 * 10 ** 10) / 10 ** 10;
+
+    setAngle(angle);
+    setRadius(radius);
+    setHeight(height);
+  }, [isOpen]);
+
+  function onDragWheel(angle: number, radius: number): void {
+    setAngle(angle);
+    setRadius(radius);
+  }
+
+  function onDragBlock(radius: number, height: number): void {
+    setRadius(radius);
+    setHeight(height);
+  }
+
+  function handleClickBackdrop() {
+    onChange(previewColor);
+    onClickBackdrop();
+  }
+
+  return {
+    angle,
+    radius,
+    height,
+
+    previewColor,
+    hcl,
+
+    onDragWheel,
+    onDragBlock,
+
+    handleClickBackdrop,
+  };
 }
