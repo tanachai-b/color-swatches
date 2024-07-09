@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { MouseEvent, MouseEventHandler, memo } from "react";
+import { memo, MouseEvent, MouseEventHandler } from "react";
 import { getTextColor } from "src/common-functions";
 import { Clickable } from "../common-components";
 
