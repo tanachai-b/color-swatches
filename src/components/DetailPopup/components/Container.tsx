@@ -12,6 +12,8 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
         "p-[50px]",
 
         "grid",
+
+        "overflow-hidden",
       )}
     >
       <div
@@ -30,6 +32,9 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
 
           isOpen ? "opacity-100" : "opacity-0",
           isOpen ? "pointer-events-auto" : "pointer-events-none",
+
+          "relative",
+          !isOpen ? "left-[100px]" : "left-0",
 
           "transition-all",
 
