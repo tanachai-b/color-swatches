@@ -18,7 +18,8 @@ export function ColorWheel({
   const size = 250;
   const center = size / 2;
 
-  const ref = useRef<HTMLCanvasElement>(null);
+  const wheelCanvas = useRef<HTMLCanvasElement>(null);
+  const lineCanvas = useRef<HTMLCanvasElement>(null);
 
   const thumbPosition = useMemo(
     () => ({
@@ -29,8 +30,12 @@ export function ColorWheel({
   );
 
   useEffect(() => {
-    if (ref.current) drawCanvas(ref.current, precision, height);
+    if (wheelCanvas.current) drawWheel(wheelCanvas.current, precision, height);
   }, [precision, height]);
+
+  useEffect(() => {
+    if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
+  }, [pointer]);
 
   const onAreaDrag = (x0: number, y0: number): void => {
     const x = x0 - center;
@@ -45,7 +50,14 @@ export function ColorWheel({
   return (
     <DragArea onDrag={onAreaDrag}>
       <div className={cx("relative")}>
-        <canvas ref={ref} width={size} height={size} />
+        <canvas ref={wheelCanvas} width={size} height={size} />
+
+        <canvas
+          className={cx("absolute", "left-0", "top-0")}
+          ref={lineCanvas}
+          width={size}
+          height={size}
+        />
 
         <Thumb {...thumbPosition} />
       </div>
@@ -53,7 +65,7 @@ export function ColorWheel({
   );
 }
 
-function drawCanvas(canvas: HTMLCanvasElement, precision: number, height: number) {
+function drawWheel(canvas: HTMLCanvasElement, precision: number, height: number) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
@@ -129,4 +141,55 @@ function drawCanvas(canvas: HTMLCanvasElement, precision: number, height: number
       ctx.fillRect(x, y, pixel, pixel);
     }
   }
+}
+
+function drawLine(canvas: HTMLCanvasElement, pointer: { angle: number; radius: number }) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const dimension = Math.min(canvas.width, canvas.height);
+  const center = dimension / 2;
+
+  ctx.clearRect(0, 0, dimension, dimension);
+
+  ctx.beginPath();
+  ctx.arc(center, center, center, 0, Math.PI * 2);
+  ctx.clip();
+
+  if (center * pointer.radius > 5) {
+    stroke(ctx, center, pointer.angle, 0, center * pointer.radius - 6);
+  }
+  if (center - center * pointer.radius > 5) {
+    stroke(ctx, center, pointer.angle, center * pointer.radius + 5, center);
+  }
+}
+
+function stroke(ctx: CanvasRenderingContext2D, center: number, a: number, r1: number, r2: number) {
+  ctx.lineCap = "round";
+
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(
+    center + r1 * Math.sin(a * 2 * Math.PI) + 0.5,
+    center + -r1 * Math.cos(a * 2 * Math.PI) + 0.5,
+  );
+  ctx.lineTo(
+    center + r2 * Math.sin(a * 2 * Math.PI) + 0.5,
+    center + -r2 * Math.cos(a * 2 * Math.PI) + 0.5,
+  );
+  ctx.stroke();
+
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "#000000";
+  ctx.beginPath();
+  ctx.moveTo(
+    center + r1 * Math.sin(a * 2 * Math.PI) + 0.5,
+    center + -r1 * Math.cos(a * 2 * Math.PI) + 0.5,
+  );
+  ctx.lineTo(
+    center + r2 * Math.sin(a * 2 * Math.PI) + 0.5,
+    center + -r2 * Math.cos(a * 2 * Math.PI) + 0.5,
+  );
+  ctx.stroke();
 }

@@ -17,7 +17,8 @@ export function ColorBlock({
 }) {
   const size = 125;
 
-  const ref = useRef<HTMLCanvasElement>(null);
+  const blockCanvas = useRef<HTMLCanvasElement>(null);
+  const lineCanvas = useRef<HTMLCanvasElement>(null);
 
   const thumbPosition = useMemo(
     () => ({ x: pointer.radius * size - 5, y: (1 - pointer.height) * size - 5 }),
@@ -25,8 +26,12 @@ export function ColorBlock({
   );
 
   useEffect(() => {
-    if (ref.current) drawCanvas(ref.current, precision, angle);
+    if (blockCanvas.current) drawBlock(blockCanvas.current, precision, angle);
   }, [precision, angle]);
+
+  useEffect(() => {
+    if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
+  }, [pointer]);
 
   const onAreaDrag = (x: number, y: number): void => {
     const radius = Math.min(Math.max(x / size, 0), 1);
@@ -38,7 +43,14 @@ export function ColorBlock({
   return (
     <DragArea onDrag={onAreaDrag}>
       <div className={cx("relative")}>
-        <canvas ref={ref} width={size} height={size} />
+        <canvas ref={blockCanvas} width={size} height={size} />
+
+        <canvas
+          className={cx("absolute", "left-0", "top-0")}
+          ref={lineCanvas}
+          width={size}
+          height={size}
+        />
 
         <Thumb {...thumbPosition} />
       </div>
@@ -46,7 +58,7 @@ export function ColorBlock({
   );
 }
 
-function drawCanvas(canvas: HTMLCanvasElement, precision: number, angle: number) {
+function drawBlock(canvas: HTMLCanvasElement, precision: number, angle: number) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
@@ -84,4 +96,38 @@ function drawCanvas(canvas: HTMLCanvasElement, precision: number, angle: number)
       ctx.fillRect(x, y, 1, 1);
     }
   }
+}
+
+function drawLine(canvas: HTMLCanvasElement, pointer: { radius: number; height: number }) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const dimension = Math.min(canvas.width, canvas.height);
+
+  ctx.clearRect(0, 0, dimension, dimension);
+
+  if (dimension * pointer.radius > 5) {
+    stroke(ctx, dimension * (1 - pointer.height), 0, dimension * pointer.radius - 6);
+  }
+  if (dimension - dimension * pointer.radius > 5) {
+    stroke(ctx, dimension * (1 - pointer.height), dimension * pointer.radius + 5, dimension);
+  }
+}
+
+function stroke(ctx: CanvasRenderingContext2D, y: number, x1: number, x2: number) {
+  ctx.lineCap = "round";
+
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(x1 + 0.5, y + 0.5);
+  ctx.lineTo(x2 + 0.5, y + 0.5);
+  ctx.stroke();
+
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "#000000";
+  ctx.beginPath();
+  ctx.moveTo(x1 + 0.5, y + 0.5);
+  ctx.lineTo(x2 + 0.5, y + 0.5);
+  ctx.stroke();
 }
