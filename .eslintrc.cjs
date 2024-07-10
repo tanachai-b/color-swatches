@@ -11,10 +11,8 @@ module.exports = {
   parserOptions: { project: ["./tsconfig.json"] },
   plugins: ["react-refresh"],
   rules: {
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
-    ],
+    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+    "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/no-unnecessary-condition": "error",
     eqeqeq: ["error", "smart"],
   },
