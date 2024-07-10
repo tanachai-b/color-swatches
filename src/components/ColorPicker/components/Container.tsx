@@ -51,6 +51,9 @@ export function Card({ isOpen, children }: { isOpen: boolean; children: ReactNod
         isOpen ? "opacity-100" : "opacity-0",
         "transition-all",
 
+        "relative",
+        !isOpen ? "top-[100px]" : "top-0",
+
         "flex",
         "flex-col",
 
