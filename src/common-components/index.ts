@@ -5,3 +5,4 @@ export * from "./MouseScrollable";
 export * from "./ObserveResize";
 export * from "./Scroll";
 export * from "./Selector";
+export * from "./Tabs";

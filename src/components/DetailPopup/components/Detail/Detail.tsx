@@ -1,8 +1,8 @@
 import cx from "classnames";
 import { useState } from "react";
+import { Tabs } from "src/common-components";
 import { toHcl, toHcv, toHsl, toHsv, toRgb } from "src/common-functions";
 import { Bar, BarChart, Label, Value } from "./BarChart";
-import { Tabs } from "./Tabs";
 
 export function Detail({ color = "#000000" }: { color?: string }) {
   const options = ["RGB", "HCL", "HCV", "HSL", "HSV"];
