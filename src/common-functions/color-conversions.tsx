@@ -27,9 +27,9 @@ export function toHcv(hex: string) {
 
   const h = hue(r, g, b, max);
   const c = ((max - min) / 255) * 100;
-  const l = (max / 255) * 100;
+  const v = (max / 255) * 100;
 
-  return { h, c, l };
+  return { h, c, v };
 }
 
 export function toHsl(hex: string) {

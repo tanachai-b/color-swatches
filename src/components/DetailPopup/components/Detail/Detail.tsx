@@ -93,8 +93,8 @@ function getHcvBarChart(color: string) {
       <Value value={hcv.c} unit={"%"} />
 
       <Label>Value</Label>
-      <Bar value={hcv.l / 100} />
-      <Value value={hcv.l} unit={"%"} />
+      <Bar value={hcv.v / 100} />
+      <Value value={hcv.v} unit={"%"} />
     </BarChart>
   );
 }
