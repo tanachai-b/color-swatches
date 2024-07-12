@@ -1,15 +1,18 @@
 import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { DragArea } from "src/common-components";
-import { add, convertToHex, convertToRgb, multiply, round } from "src/common-functions";
+import { ColorSystems } from "../ColorPicker";
+import { getColor } from "../functions";
 import { Thumb } from "./Thumb";
 
 export function ColorWheel({
+  system,
   precision,
   height,
   pointer,
   onDrag,
 }: {
+  system: ColorSystems;
   precision: number;
   height: number;
   pointer: { angle: number; radius: number };
@@ -30,8 +33,8 @@ export function ColorWheel({
   );
 
   useEffect(() => {
-    if (wheelCanvas.current) drawWheel(wheelCanvas.current, precision, height);
-  }, [precision, height]);
+    if (wheelCanvas.current) drawWheel(wheelCanvas.current, system, precision, height);
+  }, [system, precision, height]);
 
   useEffect(() => {
     if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
@@ -65,7 +68,12 @@ export function ColorWheel({
   );
 }
 
-function drawWheel(canvas: HTMLCanvasElement, precision: number, height: number) {
+function drawWheel(
+  canvas: HTMLCanvasElement,
+  system: ColorSystems,
+  precision: number,
+  height: number,
+) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
@@ -87,55 +95,7 @@ function drawWheel(canvas: HTMLCanvasElement, precision: number, height: number)
       const angle = Math.atan2(y - center, x - center) / (2 * Math.PI) + 1.25;
       const radius = Math.min(Math.hypot(x - center, y - center) / center, 1);
 
-      // const color = convertToHex(
-      //   round(
-      //     multiply(add(multiply(convertToRgb(angle), radius), (1 - radius) * 1), height),
-      //     precision,
-      //   ),
-      // );
-
-      // const color = convertToHex(
-      //   round(
-      //     add(
-      //       multiply(
-      //         add(multiply(convertToRgb(angle), radius), (1 - radius) / 2),
-      //         1 - Math.abs(height - 0.5) * 2,
-      //       ),
-      //       Math.max(height * 2 - 1, 0),
-      //     ),
-      //     precision,
-      //   ),
-      // );
-
-      // const color = convertToHex(
-      //   round(
-      //     add(
-      //       multiply(
-      //         add(multiply(convertToRgb(angle), height), (1 - height) / 2),
-      //         -Math.abs(radius - 0.5) * 2 + 1,
-      //       ),
-      //       Math.max(-radius * 2 + 1, 0),
-      //     ),
-      //     precision,
-      //   ),
-      // );
-
-      const color = convertToHex(
-        round(add(multiply(convertToRgb(angle), radius), (1 - radius) * height), precision),
-      );
-
-      // const color = convertToHex(
-      //   round(
-      //     add(
-      //       multiply(
-      //         add(multiply(convertToRgb(angle), height), (1 - height) / 2),
-      //         (-Math.abs(radius - 0.5) * 2 + 1) * (1 - height) + height,
-      //       ),
-      //       Math.max(-radius * 2 + 1, 0) * (1 - height),
-      //     ),
-      //     precision,
-      //   ),
-      // );
+      const color = getColor(system, angle, radius, height, precision);
 
       ctx.fillStyle = color;
       ctx.fillRect(x, y, pixel, pixel);

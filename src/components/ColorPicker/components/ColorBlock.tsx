@@ -1,15 +1,18 @@
 import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { DragArea } from "src/common-components";
-import { add, convertToHex, convertToRgb, multiply, round } from "src/common-functions";
+import { ColorSystems } from "../ColorPicker";
+import { getColor } from "../functions";
 import { Thumb } from "./Thumb";
 
 export function ColorBlock({
+  system,
   precision,
   angle,
   pointer,
   onDrag,
 }: {
+  system: ColorSystems;
   precision: number;
   angle: number;
   pointer: { radius: number; height: number };
@@ -26,8 +29,8 @@ export function ColorBlock({
   );
 
   useEffect(() => {
-    if (blockCanvas.current) drawBlock(blockCanvas.current, precision, angle);
-  }, [precision, angle]);
+    if (blockCanvas.current) drawBlock(blockCanvas.current, system, precision, angle);
+  }, [system, precision, angle]);
 
   useEffect(() => {
     if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
@@ -58,7 +61,12 @@ export function ColorBlock({
   );
 }
 
-function drawBlock(canvas: HTMLCanvasElement, precision: number, angle: number) {
+function drawBlock(
+  canvas: HTMLCanvasElement,
+  system: ColorSystems,
+  precision: number,
+  angle: number,
+) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
@@ -68,29 +76,10 @@ function drawBlock(canvas: HTMLCanvasElement, precision: number, angle: number) 
 
   for (let x = 0; x < dimension; x += 1) {
     for (let y = 0; y < dimension; y += 1) {
-      const x1 = x / dimension;
-      const y1 = 1 - y / dimension;
+      const radius = x / dimension;
+      const height = 1 - y / dimension;
 
-      // const color = convertToHex(
-      //   round(multiply(add(multiply(convertToRgb(angle), x1), 1 - x1), y1), precision),
-      // );
-
-      // const color = convertToHex(
-      //   round(
-      //     add(
-      //       multiply(
-      //         add(multiply(convertToRgb(angle), x1), (1 - x1) / 2),
-      //         1 - Math.abs(y1 * 2 - 1),
-      //       ),
-      //       Math.max(y1 * 2 - 1, 0),
-      //     ),
-      //     precision,
-      //   ),
-      // );
-
-      const color = convertToHex(
-        round(add(multiply(convertToRgb(angle), x1), y1 * (1 - x1)), precision),
-      );
+      const color = getColor(system, angle, radius, height, precision);
 
       ctx.fillStyle = color;
       ctx.fillRect(x, y, 1, 1);
