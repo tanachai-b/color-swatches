@@ -28,7 +28,7 @@ export default function App() {
           colorRows={colorRows}
           selected={selectedColor}
           onClick={(e, color) => {
-            setSelectedColor(color);
+            setSelectedColor(color !== selectedColor ? color : undefined);
             e.stopPropagation();
           }}
         />
