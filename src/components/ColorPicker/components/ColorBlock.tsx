@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { DragArea } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
-import { getColor } from "../functions";
+import { add, getColor, round } from "../functions";
 import { Thumb } from "./Thumb";
 
 export function ColorBlock({
@@ -104,19 +104,24 @@ function drawLine(canvas: HTMLCanvasElement, pointer: { radius: number; height: 
 }
 
 function stroke(ctx: CanvasRenderingContext2D, y: number, x1: number, x2: number) {
+  const offset = { x: 0.5, y: 0.5 };
+
+  const p1 = add(round({ x: x1, y }), offset);
+  const p2 = add(round({ x: x2, y }), offset);
+
   ctx.lineCap = "round";
 
   ctx.lineWidth = 3;
   ctx.strokeStyle = "#ffffff";
   ctx.beginPath();
-  ctx.moveTo(x1 + 0.5, y + 0.5);
-  ctx.lineTo(x2 + 0.5, y + 0.5);
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
   ctx.stroke();
 
   ctx.lineWidth = 1;
   ctx.strokeStyle = "#000000";
   ctx.beginPath();
-  ctx.moveTo(x1 + 0.5, y + 0.5);
-  ctx.lineTo(x2 + 0.5, y + 0.5);
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
   ctx.stroke();
 }

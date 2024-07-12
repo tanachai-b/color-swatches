@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { DragArea } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
-import { getColor } from "../functions";
+import { add, getColor, getXY, round } from "../functions";
 import { Thumb } from "./Thumb";
 
 export function ColorWheel({
@@ -125,31 +125,25 @@ function drawLine(canvas: HTMLCanvasElement, pointer: { angle: number; radius: n
 }
 
 function stroke(ctx: CanvasRenderingContext2D, center: number, a: number, r1: number, r2: number) {
+  const cen = { x: center, y: center };
+  const offset = { x: 0.5, y: 0.5 };
+
+  const p1 = add(round(add(getXY(r1, a * 2 * Math.PI), cen)), offset);
+  const p2 = add(round(add(getXY(r2, a * 2 * Math.PI), cen)), offset);
+
   ctx.lineCap = "round";
 
   ctx.lineWidth = 3;
   ctx.strokeStyle = "#ffffff";
   ctx.beginPath();
-  ctx.moveTo(
-    center + r1 * Math.sin(a * 2 * Math.PI) + 0.5,
-    center + -r1 * Math.cos(a * 2 * Math.PI) + 0.5,
-  );
-  ctx.lineTo(
-    center + r2 * Math.sin(a * 2 * Math.PI) + 0.5,
-    center + -r2 * Math.cos(a * 2 * Math.PI) + 0.5,
-  );
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
   ctx.stroke();
 
   ctx.lineWidth = 1;
   ctx.strokeStyle = "#000000";
   ctx.beginPath();
-  ctx.moveTo(
-    center + r1 * Math.sin(a * 2 * Math.PI) + 0.5,
-    center + -r1 * Math.cos(a * 2 * Math.PI) + 0.5,
-  );
-  ctx.lineTo(
-    center + r2 * Math.sin(a * 2 * Math.PI) + 0.5,
-    center + -r2 * Math.cos(a * 2 * Math.PI) + 0.5,
-  );
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
   ctx.stroke();
 }
