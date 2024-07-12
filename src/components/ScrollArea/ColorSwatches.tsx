@@ -1,34 +1,27 @@
 import cx from "classnames";
-import { memo, MouseEvent, MouseEventHandler } from "react";
+import { memo, MouseEventHandler, ReactNode } from "react";
+import { Clickable } from "src/common-components";
 import { getTextColor } from "src/common-functions";
-import { Clickable } from "../common-components";
 
 export function ColorSwatches({
   colorRows,
-  selected,
-  onClick,
+  swatch,
 }: {
   colorRows: string[][];
-  selected?: string;
-  onClick: (e: MouseEvent, color: string) => void;
+  swatch: (color: string) => ReactNode;
 }) {
   return (
     <div className={cx("flex", "flex-col", "gap-[20px]")}>
       {colorRows.map((colorRow, index) => (
         <div key={index} className={cx("flex", "flex-row", "gap-[20px]", "justify-around")}>
-          {colorRow.map((color) => (
-            <MemoizedColorSwatch
-              key={color}
-              color={color}
-              isSelected={color === selected}
-              onClick={(e) => onClick(e, color)}
-            />
-          ))}
+          {colorRow.map((color) => swatch(color))}
         </div>
       ))}
     </div>
   );
 }
+
+export { MemoizedColorSwatch as ColorSwatch };
 
 const MemoizedColorSwatch = memo(ColorSwatch, (prev, next) => prev.isSelected === next.isSelected);
 

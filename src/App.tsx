@@ -3,7 +3,6 @@ import { ReactNode, useMemo, useState } from "react";
 import {
   ColorPicker,
   ColorPickerButton,
-  ColorSwatches,
   Copyright,
   DetailPopup,
   PrecisionSelector,
@@ -23,16 +22,11 @@ export default function App() {
 
   return (
     <Container>
-      <ScrollArea onClick={() => setSelectedColor(undefined)}>
-        <ColorSwatches
-          colorRows={colorRows}
-          selected={selectedColor}
-          onClick={(e, color) => {
-            setSelectedColor(color !== selectedColor ? color : undefined);
-            e.stopPropagation();
-          }}
-        />
-      </ScrollArea>
+      <ScrollArea
+        colorRows={colorRows}
+        selectedColor={selectedColor}
+        onSelectColor={setSelectedColor}
+      />
 
       <DetailPopup color={selectedColor} />
 
