@@ -66,6 +66,8 @@ function Tab({
         "transition-all",
 
         "leading-none",
+
+        "cursor-pointer",
       )}
       onClick={onClick}
     >
