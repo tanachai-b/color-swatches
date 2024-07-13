@@ -55,12 +55,7 @@ export function ColorWheel({
       <div className={cx("relative")}>
         <canvas ref={wheelCanvas} width={size} height={size} />
 
-        <canvas
-          className={cx("absolute", "left-0", "top-0")}
-          ref={lineCanvas}
-          width={size}
-          height={size}
-        />
+        <canvas className={cx("absolute", "inset-0")} ref={lineCanvas} width={size} height={size} />
 
         <Thumb {...thumbPosition} />
       </div>

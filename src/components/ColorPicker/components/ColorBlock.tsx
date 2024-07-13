@@ -48,12 +48,7 @@ export function ColorBlock({
       <div className={cx("relative")}>
         <canvas ref={blockCanvas} width={size} height={size} />
 
-        <canvas
-          className={cx("absolute", "left-0", "top-0")}
-          ref={lineCanvas}
-          width={size}
-          height={size}
-        />
+        <canvas className={cx("absolute", "inset-0")} ref={lineCanvas} width={size} height={size} />
 
         <Thumb {...thumbPosition} />
       </div>
