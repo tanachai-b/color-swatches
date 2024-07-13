@@ -8,11 +8,11 @@ export function SelectorButton({
   children,
 }: {
   label: string;
-  onClick: MouseEventHandler<HTMLDivElement>;
+  onClick: MouseEventHandler;
   children: ReactNode;
 }) {
   return (
-    <div
+    <button
       className={cx(
         "bg-[#101010c0]",
         "hover:bg-[#202020c0]",
@@ -50,6 +50,6 @@ export function SelectorButton({
       <div className={cx("text-[#ffffff60]", "text-[25px]", "grid")}>
         <Icon icon={"keyboard_arrow_down"} />
       </div>
-    </div>
+    </button>
   );
 }

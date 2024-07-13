@@ -1,9 +1,10 @@
 import cx from "classnames";
+import { MouseEventHandler } from "react";
 import { color_wheel_icon } from "src/assets";
 
-export function ColorPickerButton({ onClick: onClickPicker }: { onClick: () => void }) {
+export function ColorPickerButton({ onClick: onClickPicker }: { onClick: MouseEventHandler }) {
   return (
-    <div
+    <button
       className={cx(
         "bg-[#101010c0]",
         "hover:bg-[#202020c0]",
@@ -21,6 +22,6 @@ export function ColorPickerButton({ onClick: onClickPicker }: { onClick: () => v
       onClick={onClickPicker}
     >
       <img src={color_wheel_icon} />
-    </div>
+    </button>
   );
 }

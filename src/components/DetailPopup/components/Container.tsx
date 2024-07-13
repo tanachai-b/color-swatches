@@ -7,7 +7,7 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
       className={cx(
         "absolute",
         "size-full",
-        "pointer-events-none",
+        "invisible",
 
         "p-[50px]",
 
@@ -31,7 +31,7 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
           "shadow-[0_20px_50px_0_#000000ff]",
 
           isOpen ? "opacity-100" : "opacity-0",
-          isOpen ? "pointer-events-auto" : "pointer-events-none",
+          { visible: isOpen },
 
           "relative",
           !isOpen ? "left-[100px]" : "left-0",

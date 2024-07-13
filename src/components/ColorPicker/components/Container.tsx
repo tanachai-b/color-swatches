@@ -8,7 +8,7 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
         "absolute",
         "size-full",
 
-        isOpen ? "pointer-events-auto" : "pointer-events-none",
+        { invisible: !isOpen },
 
         "grid",
       )}

@@ -10,10 +10,10 @@ export function SelectorItem({
   precision: number;
   colorCount: number;
   isSelected: boolean;
-  onClick: MouseEventHandler<HTMLDivElement>;
+  onClick: MouseEventHandler;
 }) {
   return (
-    <div
+    <button
       className={cx(
         "px-[30px]",
         "py-[15px]",
@@ -56,6 +56,6 @@ export function SelectorItem({
       >
         {colorCount.toLocaleString()} Colors
       </div>
-    </div>
+    </button>
   );
 }

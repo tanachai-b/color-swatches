@@ -11,6 +11,7 @@ export function SelectorPopup({ isOpen, children }: { isOpen: boolean; children:
         "top-full",
         "mt-[10px]",
 
+        { invisible: !isOpen },
         { "pointer-events-none": !isOpen },
       )}
     >

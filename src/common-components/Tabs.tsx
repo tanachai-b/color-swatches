@@ -43,11 +43,11 @@ function Tab({
   children,
 }: {
   isSelected: boolean;
-  onClick: MouseEventHandler<HTMLDivElement>;
+  onClick: MouseEventHandler;
   children: ReactNode;
 }) {
   return (
-    <div
+    <button
       className={cx(
         "flex-1",
 
@@ -72,6 +72,6 @@ function Tab({
       onClick={onClick}
     >
       {children}
-    </div>
+    </button>
   );
 }

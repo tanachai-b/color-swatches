@@ -17,7 +17,7 @@ export function SelectorBackdrop({
 
         isOpen ? "bg-[#00000040]" : "bg-[#00000000]",
         isOpen ? "backdrop-blur-[10px]" : "backdrop-blur-[0px]",
-        { "pointer-events-none": !isOpen },
+        { invisible: !isOpen },
 
         "transition-all",
       )}

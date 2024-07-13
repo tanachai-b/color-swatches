@@ -7,10 +7,10 @@ export function CopyButton({
   onClick,
 }: {
   isCopied: boolean;
-  onClick: MouseEventHandler<HTMLDivElement>;
+  onClick: MouseEventHandler;
 }) {
   return (
-    <div
+    <button
       className={cx(
         "shrink-0",
 
@@ -41,6 +41,6 @@ export function CopyButton({
       </div>
 
       <div className={cx("text-[15px]")}>{!isCopied ? "COPY" : "COPIED"}</div>
-    </div>
+    </button>
   );
 }
