@@ -4,7 +4,7 @@ import { Tabs } from "src/common-components";
 import { toHcl, toHcv, toHsl, toHsv, toRgb } from "src/common-functions";
 import { Bar, BarChart, Label, Value } from "./BarChart";
 
-export function Detail({ color = "#000000" }: { color?: string }) {
+export function Detail({ color }: { color: string }) {
   const options = ["RGB", "HCL", "HCV", "HSL", "HSV"];
 
   const [selected, setSelected] = useState<string>("RGB");

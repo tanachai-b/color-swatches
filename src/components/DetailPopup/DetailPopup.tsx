@@ -13,9 +13,9 @@ export function DetailPopup({ color }: { color?: string }) {
 
   return (
     <Container isOpen={color != null}>
-      <Preview color={color} />
+      <Preview color={color ?? "#808080"} />
 
-      <Detail color={color} />
+      <Detail color={color ?? "#808080"} />
 
       <CopyButton isCopied={isCopied} onClick={onClickCopy} />
     </Container>

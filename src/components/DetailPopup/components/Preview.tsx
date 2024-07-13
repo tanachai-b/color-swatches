@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { getTextColor } from "src/common-functions";
 
-export function Preview({ color }: { color?: string }) {
+export function Preview({ color }: { color: string }) {
   return (
     <div
       className={cx(
@@ -25,7 +25,7 @@ export function Preview({ color }: { color?: string }) {
 
           "transition-all",
         )}
-        style={{ color: getTextColor(color ?? "#000000") }}
+        style={{ color: getTextColor(color) }}
       >
         {color}
       </div>
