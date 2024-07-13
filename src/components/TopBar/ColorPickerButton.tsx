@@ -15,7 +15,6 @@ export function ColorPickerButton({ onClick: onClickPicker }: { onClick: MouseEv
         "shadow-[0_20px_50px_0_#000000ff]",
 
         "p-[15px]",
-        "gap-[15px]",
       )}
       onClick={onClickPicker}
     >

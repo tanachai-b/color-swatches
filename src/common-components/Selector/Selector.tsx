@@ -18,9 +18,10 @@ export function Selector({
   return (
     <div
       className={cx(
+        "size-full",
+
         { "z-[999]": isPopupOpen },
 
-        "grid",
         "relative",
 
         "leading-none",
@@ -28,9 +29,11 @@ export function Selector({
     >
       <SelectorBackdrop isOpen={isPopupOpen} onClick={() => setIsPopupOpen(false)} />
 
-      <SelectorButton label={label} onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}>
-        {value}
-      </SelectorButton>
+      <SelectorButton
+        label={label}
+        value={value}
+        onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}
+      />
 
       <SelectorPopup isOpen={isPopupOpen}>{popup(() => setIsPopupOpen(false))}</SelectorPopup>
     </div>
