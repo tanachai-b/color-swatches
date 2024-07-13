@@ -1,6 +1,6 @@
 import cx from "classnames";
-import { MouseEventHandler, useEffect, useMemo, useState } from "react";
-import { Icon, Tabs } from "src/common-components";
+import { useEffect, useMemo, useState } from "react";
+import { Tabs, ToggleButton } from "src/common-components";
 import { toHcl, toHcv, toHsl, toHsv } from "src/common-functions";
 import {
   Backdrop,
@@ -21,16 +21,14 @@ export type ColorSystems = "HCL" | "HCL_V" | "HCV" | "HCV_V" | "HSL" | "HSL_V" |
 
 export function ColorPicker({
   isOpen,
-  precision,
-  initialColor = "#000000",
-  onChange,
-  onClickBackdrop,
+  appPrecision,
+  appColor,
+  onClose,
 }: {
   isOpen: boolean;
-  precision: number;
-  initialColor?: string;
-  onChange: (color: string) => void;
-  onClickBackdrop: () => void;
+  appPrecision: number;
+  appColor: string;
+  onClose: (color: string) => void;
 }) {
   const {
     tabs,
@@ -50,19 +48,15 @@ export function ColorPicker({
 
     onDragWheel,
     onDragBlock,
-
-    handleClickBackdrop,
   } = useColorPicker({
     isOpen,
-    precision,
-    initialColor,
-    onChange,
-    onClickBackdrop,
+    appPrecision,
+    appColor,
   });
 
   return (
     <Container isOpen={isOpen}>
-      <Backdrop isOpen={isOpen} onClick={handleClickBackdrop} />
+      <Backdrop isOpen={isOpen} onClick={() => onClose(previewColor)} />
 
       <Card isOpen={isOpen}>
         <Preview color={previewColor} />
@@ -73,19 +67,25 @@ export function ColorPicker({
           <div className={cx("relative", "grid")}>
             <ColorWheel
               system={system}
-              precision={precision}
+              precision={appPrecision}
               height={height}
               pointer={{ angle, radius }}
               onDrag={onDragWheel}
             />
 
-            <FlipButton isFlipped={isFlipped} onClick={() => setIsFlipped(!isFlipped)} />
+            <div className={cx("absolute", "self-end")}>
+              <ToggleButton
+                icon="sync"
+                isActive={isFlipped}
+                onClick={() => setIsFlipped(!isFlipped)}
+              />
+            </div>
           </div>
 
           <div className={cx("grid", "grid-cols-2")}>
             <ColorBlock
               system={system}
-              precision={precision}
+              precision={appPrecision}
               angle={angle}
               pointer={{ radius, height }}
               onDrag={onDragBlock}
@@ -114,39 +114,14 @@ export function ColorPicker({
   );
 }
 
-function FlipButton({ isFlipped, onClick }: { isFlipped: boolean; onClick: MouseEventHandler }) {
-  return (
-    <button
-      className={cx(
-        "absolute",
-        "self-end",
-
-        "grid",
-
-        "text-[25px]",
-        isFlipped ? "text-[#ffffffc0]" : "text-[#ffffff30]",
-
-        "transition-all",
-      )}
-      onClick={onClick}
-    >
-      <Icon icon="sync" />
-    </button>
-  );
-}
-
 function useColorPicker({
   isOpen,
-  precision,
-  initialColor,
-  onChange,
-  onClickBackdrop,
+  appPrecision,
+  appColor,
 }: {
   isOpen: boolean;
-  precision: number;
-  initialColor: string;
-  onChange: (color: string) => void;
-  onClickBackdrop: () => void;
+  appPrecision: number;
+  appColor: string;
 }) {
   const tabs: ColorSystems[] = ["HCL", "HCV", "HSL", "HSV"];
   const [tab, setTab] = useState(0);
@@ -169,15 +144,15 @@ function useColorPicker({
   const [height, setHeight] = useState(0);
 
   const previewColor = useMemo(
-    () => getColor(system, angle, radius, height, precision),
-    [angle, radius, height],
+    () => getColor(system, angle, radius, height, appPrecision),
+    [angle, radius, height, appPrecision],
   );
   const colorDetails = useMemo(() => getColorDetails(system, previewColor), [system, previewColor]);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const { angle, radius, height } = getCoordinate(system, initialColor);
+    const { angle, radius, height } = getCoordinate(system, appColor);
 
     setAngle(angle);
     setRadius(radius);
@@ -202,11 +177,6 @@ function useColorPicker({
     setHeight(height);
   }
 
-  function handleClickBackdrop() {
-    onChange(previewColor);
-    onClickBackdrop();
-  }
-
   return {
     tabs,
     tab,
@@ -225,8 +195,6 @@ function useColorPicker({
 
     onDragWheel,
     onDragBlock,
-
-    handleClickBackdrop,
   };
 }
 

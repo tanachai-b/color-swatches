@@ -38,10 +38,12 @@ export default function App() {
 
       <ColorPicker
         isOpen={isOpenPicker}
-        precision={precision}
-        initialColor={selectedColor}
-        onChange={setSelectedColor}
-        onClickBackdrop={() => setIsOpenPicker(false)}
+        appPrecision={precision}
+        appColor={selectedColor ?? "#808080"}
+        onClose={(color) => {
+          setSelectedColor(color);
+          setIsOpenPicker(false);
+        }}
       />
 
       <Copyright />
