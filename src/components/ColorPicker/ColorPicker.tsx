@@ -35,6 +35,10 @@ export function ColorPicker({
     tab,
     setTab,
 
+    isStep,
+    setIsStep,
+    precision,
+
     isFlipped,
     setIsFlipped,
     system,
@@ -67,11 +71,15 @@ export function ColorPicker({
           <div className={cx("relative", "grid")}>
             <ColorWheel
               system={system}
-              precision={appPrecision}
+              precision={precision}
               height={height}
               pointer={{ angle, radius }}
               onDrag={onDragWheel}
             />
+
+            <div className={cx("absolute")}>
+              <ToggleButton icon="stairs_2" isActive={isStep} onClick={() => setIsStep(!isStep)} />
+            </div>
 
             <div className={cx("absolute", "self-end")}>
               <ToggleButton
@@ -85,7 +93,7 @@ export function ColorPicker({
           <div className={cx("grid", "grid-cols-2")}>
             <ColorBlock
               system={system}
-              precision={appPrecision}
+              precision={precision}
               angle={angle}
               pointer={{ radius, height }}
               onDrag={onDragBlock}
@@ -126,6 +134,9 @@ function useColorPicker({
   const tabs: ColorSystems[] = ["HCL", "HCV", "HSL", "HSV"];
   const [tab, setTab] = useState(0);
 
+  const [isStep, setIsStep] = useState(false);
+  const precision = isStep ? appPrecision : 255;
+
   const [isFlipped, setIsFlipped] = useState(false);
   const flippedSystem: { [system: string]: ColorSystems } = {
     HCL: "HCL_V",
@@ -144,8 +155,8 @@ function useColorPicker({
   const [height, setHeight] = useState(0);
 
   const previewColor = useMemo(
-    () => getColor(system, angle, radius, height, appPrecision),
-    [angle, radius, height, appPrecision],
+    () => getColor(system, angle, radius, height, precision),
+    [angle, radius, height, precision],
   );
   const colorDetails = useMemo(() => getColorDetails(system, previewColor), [system, previewColor]);
 
@@ -181,6 +192,10 @@ function useColorPicker({
     tabs,
     tab,
     setTab,
+
+    isStep,
+    setIsStep,
+    precision,
 
     isFlipped,
     setIsFlipped,
