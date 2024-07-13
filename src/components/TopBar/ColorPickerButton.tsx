@@ -10,8 +10,6 @@ export function ColorPickerButton({ onClick: onClickPicker }: { onClick: MouseEv
         "hover:bg-[#202020c0]",
         "transition-all",
 
-        "cursor-pointer",
-
         "rounded-[10px]",
         "backdrop-blur-[20px]",
         "shadow-[0_20px_50px_0_#000000ff]",

@@ -25,8 +25,6 @@ export function SelectorItem({
         "items-center",
         "gap-[10px]",
 
-        "cursor-pointer",
-
         "hover:bg-[#ffffff10]",
         { "bg-[#ffffff10]": isSelected },
         "transition-all",

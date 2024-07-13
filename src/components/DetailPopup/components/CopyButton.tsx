@@ -25,7 +25,6 @@ export function CopyButton({
 
         "bg-[#ffffff08]",
         "hover:bg-[#ffffff10]",
-        "cursor-pointer",
 
         "text-[#ffffff60]",
         "hover:text-[#ffffffc0]",
