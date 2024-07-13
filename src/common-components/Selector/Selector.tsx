@@ -16,7 +16,16 @@ export function Selector({
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
   return (
-    <div className={cx("leading-none", "grid", "relative")}>
+    <div
+      className={cx(
+        { "z-[999]": isPopupOpen },
+
+        "grid",
+        "relative",
+
+        "leading-none",
+      )}
+    >
       <SelectorBackdrop isOpen={isPopupOpen} onClick={() => setIsPopupOpen(false)} />
 
       <SelectorButton label={label} onClick={() => setIsPopupOpen((isPopupOpen) => !isPopupOpen)}>
