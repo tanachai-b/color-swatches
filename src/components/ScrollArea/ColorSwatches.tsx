@@ -21,16 +21,21 @@ export function ColorSwatches({
   );
 }
 
-export { MemoizedColorSwatch as ColorSwatch };
+export { MemoColorSwatch as ColorSwatch };
 
-const MemoizedColorSwatch = memo(ColorSwatch, (prev, next) => prev.isSelected === next.isSelected);
+const MemoColorSwatch = memo(
+  ColorSwatch,
+  (prev, next) => prev.isShowCode === next.isShowCode && prev.isSelected === next.isSelected,
+);
 
 function ColorSwatch({
   color,
+  isShowCode,
   isSelected,
   onClick,
 }: {
   color: string;
+  isShowCode: boolean;
   isSelected: boolean;
   onClick: MouseEventHandler<HTMLDivElement>;
 }) {
@@ -61,7 +66,7 @@ function ColorSwatch({
           )}
           style={{ backgroundColor: color, color: getTextColor(color) }}
         >
-          {color}
+          {isShowCode && color}
         </div>
       </Clickable>
     </div>

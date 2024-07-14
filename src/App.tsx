@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { ReactNode, useState } from "react";
 import {
+  ColorCodeButton,
   ColorPicker,
   ColorPickerButton,
   Copyright,
@@ -9,19 +10,18 @@ import {
   ScrollArea,
   TopBar,
 } from "./components";
-import { getColorRows } from "./functions";
 
 export default function App() {
   const [precision, setPrecision] = useState<number>(8);
-
   const [selectedColor, setSelectedColor] = useState<string>();
-
   const [isOpenPicker, setIsOpenPicker] = useState<boolean>(false);
+  const [isShowCode, setIsShowCode] = useState<boolean>(true);
 
   return (
     <Container>
       <ScrollArea
         precision={precision}
+        isShowCode={isShowCode}
         selectedColor={selectedColor}
         onSelectColor={setSelectedColor}
       />
@@ -30,6 +30,8 @@ export default function App() {
 
       <TopBar>
         <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
+
+        <ColorCodeButton isActive={isShowCode} onClick={() => setIsShowCode(!isShowCode)} />
 
         <ColorPickerButton onClick={() => setIsOpenPicker(true)} />
       </TopBar>

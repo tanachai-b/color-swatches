@@ -6,10 +6,12 @@ import { getColorRows } from "./getColorRows";
 
 export function ScrollArea({
   precision,
+  isShowCode,
   selectedColor,
   onSelectColor,
 }: {
   precision: number;
+  isShowCode: boolean;
   selectedColor?: string;
   onSelectColor: (color?: string) => void;
 }) {
@@ -27,6 +29,7 @@ export function ScrollArea({
         <ColorSwatch
           key={color}
           color={color}
+          isShowCode={isShowCode}
           isSelected={color === selectedColor}
           onClick={(e) => {
             onSelectColor(color !== selectedColor ? color : undefined);
