@@ -1,17 +1,20 @@
 import cx from "classnames";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Clickable, MouseScrollable, ObserveResize } from "src/common-components";
 import { ColorSwatch, ColorSwatches } from "./ColorSwatches";
+import { getColorRows } from "./getColorRows";
 
 export function ScrollArea({
-  colorRows,
+  precision,
   selectedColor,
   onSelectColor,
 }: {
-  colorRows: string[][];
+  precision: number;
   selectedColor?: string;
   onSelectColor: (color?: string) => void;
 }) {
+  const colorRows = useMemo(() => getColorRows(precision), [precision]);
+
   const [containerWidth, setContainerWidth] = useState(0);
   const [swatchesWidth, setSwatchesWidth] = useState(0);
 

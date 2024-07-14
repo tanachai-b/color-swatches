@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   ColorPicker,
   ColorPickerButton,
@@ -14,8 +14,6 @@ import { getColorRows } from "./functions";
 export default function App() {
   const [precision, setPrecision] = useState<number>(8);
 
-  const colorRows = useMemo(() => getColorRows(precision), [precision]);
-
   const [selectedColor, setSelectedColor] = useState<string>();
 
   const [isOpenPicker, setIsOpenPicker] = useState<boolean>(false);
@@ -23,7 +21,7 @@ export default function App() {
   return (
     <Container>
       <ScrollArea
-        colorRows={colorRows}
+        precision={precision}
         selectedColor={selectedColor}
         onSelectColor={setSelectedColor}
       />
