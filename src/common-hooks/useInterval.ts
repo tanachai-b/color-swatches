@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 export function useInterval(handler: () => void, timeout: number) {
-  const [triggered, triggers] = useState({});
+  const [triggered, setTriggered] = useState({});
 
   useEffect(() => {
-    const interval = setInterval(() => triggers({}), timeout);
+    const interval = setInterval(() => setTriggered({}), timeout);
     return () => clearInterval(interval);
   }, []);
 

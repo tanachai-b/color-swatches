@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 export function useTrigger(callback: () => void) {
-  const [triggered, trigger] = useState<object>();
+  const [triggered, setTriggered] = useState<object>();
 
   useEffect(callback, [triggered]);
 
-  return () => trigger({});
+  return () => setTriggered({});
 }
