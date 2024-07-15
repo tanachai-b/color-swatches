@@ -29,17 +29,15 @@ export function CopyButton({
         "text-[#ffffff60]",
         "hover:text-[#ffffffc0]",
 
-        "tracking-[1px]",
-
         "transition-all",
       )}
       onClick={onClick}
     >
-      <div className={cx("text-[25px]", "grid")}>
+      <div className={cx("text-[20px]", "grid")}>
         <Icon icon={!isCopied ? "content_copy" : "check"} />
       </div>
 
-      <div className={cx("text-[15px]")}>{!isCopied ? "COPY" : "COPIED"}</div>
+      <div className={cx("text-[15px]", "tracking-[1px]")}>{!isCopied ? "COPY" : "COPIED"}</div>
     </button>
   );
 }
