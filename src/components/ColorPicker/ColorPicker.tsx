@@ -9,6 +9,7 @@ import {
   ColorBlock,
   ColorWheel,
   Container,
+  CopyButton,
   Detail,
   Field,
   Label,
@@ -57,6 +58,8 @@ export function ColorPicker({
     appPrecision,
     appColor,
   });
+
+  const { isCopied, onClickCopy } = useCopyButton(previewColor);
 
   return (
     <Container isOpen={isOpen}>
@@ -117,6 +120,8 @@ export function ColorPicker({
             </Detail>
           </div>
         </Body>
+
+        <CopyButton isCopied={isCopied} onClick={onClickCopy} />
       </Card>
     </Container>
   );
@@ -273,4 +278,17 @@ function getColorDetails(system: ColorSystems, color: string) {
   const colorDetails = getColorDetails[detailSystem](color);
 
   return colorDetails;
+}
+
+function useCopyButton(previewColor: string) {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  useEffect(() => setIsCopied(false), [previewColor]);
+
+  function onClickCopy() {
+    setIsCopied(true);
+    navigator.clipboard.writeText(previewColor);
+  }
+
+  return { isCopied, onClickCopy };
 }
