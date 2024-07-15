@@ -3,9 +3,7 @@ import { ReactNode, useState } from "react";
 import {
   ColorCodeButton,
   ColorPicker,
-  ColorPickerButton,
   Copyright,
-  DetailPopup,
   PrecisionSelector,
   ScrollArea,
   TopBar,
@@ -14,7 +12,7 @@ import {
 export default function App() {
   const [precision, setPrecision] = useState<number>(8);
   const [selectedColor, setSelectedColor] = useState<string>();
-  const [isOpenPicker, setIsOpenPicker] = useState<boolean>(false);
+  const [pickerColor, setPickerColor] = useState<string>();
   const [isShowCode, setIsShowCode] = useState<boolean>(true);
 
   return (
@@ -23,27 +21,22 @@ export default function App() {
         precision={precision}
         isShowCode={isShowCode}
         selectedColor={selectedColor}
-        onSelectColor={setSelectedColor}
+        onSelectColor={(color) => {
+          setSelectedColor(color);
+          setPickerColor(color);
+        }}
       />
-
-      <DetailPopup color={selectedColor} />
 
       <TopBar>
         <PrecisionSelector selectedPrecision={precision} onSelect={setPrecision} />
 
         <ColorCodeButton isActive={isShowCode} onClick={() => setIsShowCode(!isShowCode)} />
-
-        <ColorPickerButton onClick={() => setIsOpenPicker(true)} />
       </TopBar>
 
       <ColorPicker
-        isOpen={isOpenPicker}
         appPrecision={precision}
-        appColor={selectedColor ?? "#808080"}
-        onClose={(color) => {
-          setSelectedColor(color);
-          setIsOpenPicker(false);
-        }}
+        appColor={pickerColor}
+        onChange={(color) => setSelectedColor(color)}
       />
 
       <Copyright />

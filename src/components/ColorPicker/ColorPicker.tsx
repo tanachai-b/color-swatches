@@ -2,8 +2,8 @@ import cx from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { Tabs, ToggleButton } from "src/common-components";
 import { toHcl, toHcv, toHsl, toHsv } from "src/common-functions";
+import { useTrigger } from "src/common-hooks";
 import {
-  Backdrop,
   Body,
   Card,
   ColorBlock,
@@ -21,15 +21,13 @@ import { getColor, getCoordinate } from "./functions";
 export type ColorSystems = "HCL" | "HCL_V" | "HCV" | "HCV_V" | "HSL" | "HSL_V" | "HSV" | "HSV_V";
 
 export function ColorPicker({
-  isOpen,
   appPrecision,
   appColor,
-  onClose,
+  onChange,
 }: {
-  isOpen: boolean;
   appPrecision: number;
-  appColor: string;
-  onClose: (color: string) => void;
+  appColor?: string;
+  onChange: (color: string) => void;
 }) {
   const {
     tabs,
@@ -54,18 +52,17 @@ export function ColorPicker({
     onDragWheel,
     onDragBlock,
   } = useColorPicker({
-    isOpen,
     appPrecision,
     appColor,
   });
 
   const { isCopied, onClickCopy } = useCopyButton(previewColor);
 
-  return (
-    <Container isOpen={isOpen}>
-      <Backdrop isOpen={isOpen} onClick={() => onClose(previewColor)} />
+  const triggerOnChange = useTrigger(() => onChange(previewColor));
 
-      <Card isOpen={isOpen}>
+  return (
+    <Container>
+      <Card isOpen={appColor != null}>
         <Preview color={previewColor} />
 
         <Tabs options={tabs} selected={tab} onSelect={setTab} />
@@ -78,10 +75,18 @@ export function ColorPicker({
               height={height}
               pointer={{ angle, radius }}
               onDrag={onDragWheel}
+              onDragStop={() => onChange(previewColor)}
             />
 
             <div className={cx("absolute")}>
-              <ToggleButton icon="stairs_2" isActive={isStep} onClick={() => setIsStep(!isStep)} />
+              <ToggleButton
+                icon="stairs_2"
+                isActive={isStep}
+                onClick={async () => {
+                  setIsStep(!isStep);
+                  triggerOnChange();
+                }}
+              />
             </div>
 
             <div className={cx("absolute", "self-end")}>
@@ -100,6 +105,7 @@ export function ColorPicker({
               angle={angle}
               pointer={{ radius, height }}
               onDrag={onDragBlock}
+              onDragStop={() => onChange(previewColor)}
             />
 
             <Detail>
@@ -127,15 +133,7 @@ export function ColorPicker({
   );
 }
 
-function useColorPicker({
-  isOpen,
-  appPrecision,
-  appColor,
-}: {
-  isOpen: boolean;
-  appPrecision: number;
-  appColor: string;
-}) {
+function useColorPicker({ appPrecision, appColor }: { appPrecision: number; appColor?: string }) {
   const tabs: ColorSystems[] = ["HCL", "HCV", "HSL", "HSV"];
   const [tab, setTab] = useState(0);
 
@@ -166,14 +164,14 @@ function useColorPicker({
   const colorDetails = useMemo(() => getColorDetails(system, previewColor), [system, previewColor]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (appColor == null) return;
 
     const { angle, radius, height } = getCoordinate(system, appColor);
 
     setAngle(angle);
     setRadius(radius);
     setHeight(height);
-  }, [isOpen]);
+  }, [appColor]);
 
   useEffect(() => {
     const { angle, radius, height } = getCoordinate(system, previewColor);
@@ -183,12 +181,12 @@ function useColorPicker({
     setHeight(height);
   }, [system]);
 
-  function onDragWheel(angle: number, radius: number): void {
+  function onDragWheel(angle: number, radius: number) {
     setAngle(angle);
     setRadius(radius);
   }
 
-  function onDragBlock(radius: number, height: number): void {
+  function onDragBlock(radius: number, height: number) {
     setRadius(radius);
     setHeight(height);
   }

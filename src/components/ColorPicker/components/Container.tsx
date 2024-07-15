@@ -1,16 +1,17 @@
 import cx from "classnames";
 import { ReactNode } from "react";
 
-export function Container({ isOpen, children }: { isOpen: boolean; children: ReactNode }) {
+export function Container({ children }: { children: ReactNode }) {
   return (
     <div
       className={cx(
         "absolute",
         "size-full",
+        "invisible",
 
-        { invisible: !isOpen },
-
+        "p-[50px]",
         "grid",
+        "overflow-hidden",
       )}
     >
       {children}
@@ -18,28 +19,13 @@ export function Container({ isOpen, children }: { isOpen: boolean; children: Rea
   );
 }
 
-export function Backdrop({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
-  return (
-    <div
-      className={cx(
-        "fixed",
-        "inset-0",
-
-        isOpen ? "bg-[#00000040]" : "bg-[#00000000]",
-        isOpen ? "backdrop-blur-[10px]" : "backdrop-blur-[0px]",
-
-        "transition-all",
-      )}
-      onClick={onClick}
-    />
-  );
-}
-
 export function Card({ isOpen, children }: { isOpen: boolean; children: ReactNode }) {
   return (
     <div
       className={cx(
-        "justify-self-center",
+        { visible: isOpen },
+
+        "justify-self-end",
         "self-center",
 
         "bg-[#101010c0]",
@@ -52,7 +38,7 @@ export function Card({ isOpen, children }: { isOpen: boolean; children: ReactNod
         "transition-all",
 
         "relative",
-        !isOpen ? "top-[100px]" : "top-0",
+        !isOpen ? "-right-[100px]" : "right-0",
 
         "flex",
         "flex-col",
