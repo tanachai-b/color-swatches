@@ -4,9 +4,11 @@ import { ObserveResize } from "src/common-components";
 
 export function DragArea({
   onDrag,
+  onDragStop,
   children,
 }: {
   onDrag: (x: number, y: number) => void;
+  onDragStop: () => void;
   children: ReactNode;
 }) {
   const [area, setArea] = useState<{ x: number; y: number; width: number; height: number }>({
@@ -38,7 +40,9 @@ export function DragArea({
   }
 
   function onPointerUp() {
+    if (!isPointerDown) return;
     setIsPointerDown(false);
+    onDragStop();
   }
 
   function drag(x: number, y: number) {
