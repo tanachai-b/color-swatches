@@ -28,7 +28,7 @@ export function DragArea({
       document.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerup", onPointerUp);
     };
-  }, [area, isPointerDown]);
+  }, [onPointerMove, onPointerUp]);
 
   function onPointerDown(e: React.PointerEvent) {
     setIsPointerDown(true);
