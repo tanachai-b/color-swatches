@@ -60,6 +60,7 @@ function Container({ children }: { children: ReactNode }) {
         "relative",
 
         "select-none",
+        "overflow-hidden",
       )}
     >
       {children}
