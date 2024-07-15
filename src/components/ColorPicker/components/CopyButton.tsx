@@ -1,14 +1,17 @@
 import cx from "classnames";
-import { MouseEventHandler } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "src/common-components";
 
-export function CopyButton({
-  isCopied,
-  onClick,
-}: {
-  isCopied: boolean;
-  onClick: MouseEventHandler;
-}) {
+export function CopyButton({ previewColor }: { previewColor: string }) {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  useEffect(() => setIsCopied(false), [previewColor]);
+
+  function onClickCopy() {
+    setIsCopied(true);
+    navigator.clipboard.writeText(previewColor);
+  }
+
   return (
     <button
       className={cx(
@@ -31,7 +34,7 @@ export function CopyButton({
 
         "transition-all",
       )}
-      onClick={onClick}
+      onClick={onClickCopy}
     >
       <div className={cx("text-[20px]", "grid")}>
         <Icon icon={!isCopied ? "content_copy" : "check"} />

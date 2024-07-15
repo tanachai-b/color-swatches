@@ -59,8 +59,6 @@ export function ColorPicker({
     appColor,
   });
 
-  const { isCopied, onClickCopy } = useCopyButton(previewColor);
-
   const triggerOnChange = useTrigger(() => onChange(previewColor));
 
   return (
@@ -132,7 +130,7 @@ export function ColorPicker({
           </div>
         </Body>
 
-        <CopyButton isCopied={isCopied} onClick={onClickCopy} />
+        <CopyButton previewColor={previewColor} />
       </Card>
     </Container>
   );
@@ -281,17 +279,4 @@ function getColorDetails(system: ColorSystems, color: string) {
   const colorDetails = getColorDetails[detailSystem](color);
 
   return colorDetails;
-}
-
-function useCopyButton(previewColor: string) {
-  const [isCopied, setIsCopied] = useState<boolean>(false);
-
-  useEffect(() => setIsCopied(false), [previewColor]);
-
-  function onClickCopy() {
-    setIsCopied(true);
-    navigator.clipboard.writeText(previewColor);
-  }
-
-  return { isCopied, onClickCopy };
 }
