@@ -5,9 +5,10 @@ export function Icon({ icon }: { icon: string }) {
     <span
       className={cx("material-symbols-rounded")}
       style={{
-        fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-        fontSize: "inherit",
         width: "1ch",
+        fontSize: "inherit",
+        fontWeight: "inherit",
+        fontVariationSettings: "'FILL' 0, 'GRAD' 0, 'opsz' 24",
       }}
     >
       {icon}
