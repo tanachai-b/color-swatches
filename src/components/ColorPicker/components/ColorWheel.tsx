@@ -11,12 +11,14 @@ export function ColorWheel({
   height,
   pointer,
   onDrag,
+  onDragStop,
 }: {
   system: ColorSystems;
   precision: number;
   height: number;
   pointer: { angle: number; radius: number };
   onDrag: (angle: number, radius: number) => void;
+  onDragStop: () => void;
 }) {
   const size = 250;
   const center = size / 2;
@@ -51,7 +53,7 @@ export function ColorWheel({
   };
 
   return (
-    <DragArea onDrag={onAreaDrag}>
+    <DragArea onDrag={onAreaDrag} onDragStop={onDragStop}>
       <div className={cx("relative")}>
         <canvas ref={wheelCanvas} width={size} height={size} />
 

@@ -11,12 +11,14 @@ export function ColorBlock({
   angle,
   pointer,
   onDrag,
+  onDragStop,
 }: {
   system: ColorSystems;
   precision: number;
   angle: number;
   pointer: { radius: number; height: number };
   onDrag: (radius: number, height: number) => void;
+  onDragStop: () => void;
 }) {
   const size = 125;
 
@@ -44,7 +46,7 @@ export function ColorBlock({
   };
 
   return (
-    <DragArea onDrag={onAreaDrag}>
+    <DragArea onDrag={onAreaDrag} onDragStop={onDragStop}>
       <div className={cx("relative")}>
         <canvas ref={blockCanvas} width={size} height={size} />
 
