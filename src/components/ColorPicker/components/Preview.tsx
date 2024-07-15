@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { getTextColor } from "src/common-functions";
+import { getShade } from "src/common-functions";
 
 export function Preview({ color }: { color: string }) {
   return (
@@ -16,10 +16,8 @@ export function Preview({ color }: { color: string }) {
         className={cx(
           "font-mono",
           "text-[25px]",
-
-          "opacity-50",
+          getShade(color) === "dark" ? "text-[#ffffff80]" : "text-[#00000080]",
         )}
-        style={{ color: getTextColor(color) }}
       >
         {color}
       </div>

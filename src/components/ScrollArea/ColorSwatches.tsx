@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { memo, MouseEventHandler, ReactNode } from "react";
 import { Clickable } from "src/common-components";
-import { getTextColor } from "src/common-functions";
+import { getShade } from "src/common-functions";
 
 export function ColorSwatches({
   colorRows,
@@ -54,9 +54,10 @@ function ColorSwatch({
 
             "font-mono",
             "text-[11px]",
+            getShade(color) === "dark" ? "text-[#ffffff]" : "text-[#000000]",
 
             "outline",
-            isSelected ? "outline-[#ffffff]" : "outline-[#ffffff00]",
+            isSelected ? "outline-[#ffffffff]" : "outline-[#ffffff00]",
             "outline-[2px]",
             "outline-offset-[2px]",
 
@@ -64,7 +65,7 @@ function ColorSwatch({
 
             "cursor-pointer",
           )}
-          style={{ backgroundColor: color, color: getTextColor(color) }}
+          style={{ backgroundColor: color }}
         >
           {isShowCode && color}
         </div>
