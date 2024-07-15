@@ -1,3 +1,4 @@
+export * from "./CloseButton";
 export * from "./ColorBlock";
 export * from "./ColorWheel";
 export * from "./Container";

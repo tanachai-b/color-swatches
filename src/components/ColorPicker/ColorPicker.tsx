@@ -1,11 +1,12 @@
 import cx from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { Tabs, ToggleButton } from "src/common-components";
-import { toHcl, toHcv, toHsl, toHsv } from "src/common-functions";
+import { getShade, toHcl, toHcv, toHsl, toHsv } from "src/common-functions";
 import { useTrigger } from "src/common-hooks";
 import {
   Body,
   Card,
+  CloseButton,
   ColorBlock,
   ColorWheel,
   Container,
@@ -24,10 +25,12 @@ export function ColorPicker({
   appPrecision,
   appColor,
   onChange,
+  onClose,
 }: {
   appPrecision: number;
   appColor?: string;
-  onChange: (color: string) => void;
+  onChange: (color?: string) => void;
+  onClose: () => void;
 }) {
   const {
     tabs,
@@ -63,6 +66,8 @@ export function ColorPicker({
   return (
     <Container>
       <Card isOpen={appColor != null}>
+        <CloseButton theme={getShade(previewColor)} onClose={onClose} />
+
         <Preview color={previewColor} />
 
         <Tabs options={tabs} selected={tab} onSelect={setTab} />

@@ -36,7 +36,11 @@ export default function App() {
       <ColorPicker
         appPrecision={precision}
         appColor={pickerColor}
-        onChange={(color) => setSelectedColor(color)}
+        onChange={setSelectedColor}
+        onClose={() => {
+          setSelectedColor(undefined);
+          setPickerColor(undefined);
+        }}
       />
 
       <Copyright />
