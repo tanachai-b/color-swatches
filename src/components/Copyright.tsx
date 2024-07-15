@@ -17,6 +17,8 @@ export function Copyright() {
         "text-[#ffffff80]",
         "text-[12px]",
         "leading-none",
+
+        "z-1",
       )}
     >
       © 2024 Tanachai Bunlutangtum. All Rights Reserved.

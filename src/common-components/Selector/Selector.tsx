@@ -20,7 +20,7 @@ export function Selector({
       className={cx(
         "size-full",
 
-        { "z-[999]": isPopupOpen },
+        { "z-1": isPopupOpen },
 
         "relative",
 
