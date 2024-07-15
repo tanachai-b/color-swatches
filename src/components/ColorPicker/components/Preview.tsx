@@ -9,18 +9,16 @@ export function Preview({ color }: { color: string }) {
 
         "grid",
         "place-items-center",
+
+        "font-mono",
+        "text-[25px]",
+        getShade(color) === "dark" ? "text-[#ffffff80]" : "text-[#00000080]",
+
+        "transition-all",
       )}
       style={{ background: color }}
     >
-      <div
-        className={cx(
-          "font-mono",
-          "text-[25px]",
-          getShade(color) === "dark" ? "text-[#ffffff80]" : "text-[#00000080]",
-        )}
-      >
-        {color}
-      </div>
+      {color}
     </div>
   );
 }
