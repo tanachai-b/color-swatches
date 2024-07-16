@@ -15,13 +15,13 @@ export function Copyright() {
         "p-[5px]",
 
         "text-[#ffffff80]",
-        "text-[12px]",
+        "text-[11px]",
         "leading-none",
 
         "z-1",
       )}
     >
-      © 2024 Tanachai Bunlutangtum. All Rights Reserved.
+      Copyright © 2024 Tanachai Bunlutangtum. All rights reserved.
     </div>
   );
 }
