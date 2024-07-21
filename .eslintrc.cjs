@@ -13,7 +13,9 @@ module.exports = {
   rules: {
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
     "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-unnecessary-condition": "error",
+    "@typescript-eslint/strict-boolean-expressions": "error",
     eqeqeq: ["error", "smart"],
   },
 };
