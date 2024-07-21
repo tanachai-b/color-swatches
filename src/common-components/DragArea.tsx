@@ -1,4 +1,3 @@
-import cx from "classnames";
 import { ReactNode, useEffect, useState } from "react";
 import { ObserveResize } from "src/common-components";
 
@@ -51,9 +50,7 @@ export function DragArea({
 
   return (
     <ObserveResize onResize={({ x, y, width, height }) => setArea({ x, y, width, height })}>
-      <div className={cx("touch-none")} onPointerDown={onPointerDown}>
-        {children}
-      </div>
+      <div onPointerDown={onPointerDown}>{children}</div>
     </ObserveResize>
   );
 }

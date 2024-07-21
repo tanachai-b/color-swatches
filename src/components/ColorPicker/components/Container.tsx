@@ -11,7 +11,7 @@ export function Container({ children }: { children: ReactNode }) {
 
         "p-[50px]",
         "grid",
-        "overflow-hidden",
+        "overflow-clip",
       )}
     >
       {children}
@@ -43,7 +43,7 @@ export function Card({ isOpen, children }: { isOpen: boolean; children: ReactNod
         "flex",
         "flex-col",
 
-        "overflow-hidden",
+        "overflow-clip",
       )}
     >
       {children}
