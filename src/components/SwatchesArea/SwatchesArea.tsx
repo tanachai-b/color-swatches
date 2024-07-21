@@ -4,7 +4,7 @@ import { Clickable, MouseScrollable, ObserveResize } from "src/common-components
 import { ColorSwatch, ColorSwatches } from "./ColorSwatches";
 import { getColorRows } from "./getColorRows";
 
-export function ScrollArea({
+export function SwatchesArea({
   precision,
   isShowCode,
   selectedColor,

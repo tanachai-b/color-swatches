@@ -5,7 +5,7 @@ import {
   ColorPicker,
   Copyright,
   PrecisionSelector,
-  ScrollArea,
+  SwatchesArea,
   TopBar,
 } from "./components";
 
@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <Container>
-      <ScrollArea
+      <SwatchesArea
         precision={precision}
         isShowCode={isShowCode}
         selectedColor={selectedColor}
