@@ -1,5 +1,5 @@
-import { RefObject, useState } from "react";
-import { useInterval } from "src/common-hooks";
+import { RefObject, useEffect, useState } from "react";
+import { useTrigger } from "src/common-hooks";
 
 export function useScrollInertia({
   ref,
@@ -18,10 +18,10 @@ export function useScrollInertia({
     y: 0,
   });
 
-  useInterval(() => {
-    if (isMouseDown) {
-      if (ref.current == null) return;
+  const trigger = useTrigger(() => {
+    if (ref.current == null) return;
 
+    if (isMouseDown) {
       const { scrollLeft, scrollTop } = ref.current;
 
       setScrollSpeed({
@@ -31,8 +31,6 @@ export function useScrollInertia({
 
       setLastPosition({ x: scrollLeft, y: scrollTop });
     } else {
-      if (ref.current == null) return;
-
       ref.current.scrollTo({
         left: ref.current.scrollLeft + Math.round(scrollSpeed.x),
         top: ref.current.scrollTop + Math.round(scrollSpeed.y),
@@ -43,5 +41,10 @@ export function useScrollInertia({
         y: scrollSpeed.y * 0.9,
       });
     }
-  }, 1000 / 60);
+  });
+
+  useEffect(() => {
+    const interval = setInterval(trigger, 1000 / 60);
+    return () => clearInterval(interval);
+  }, []);
 }

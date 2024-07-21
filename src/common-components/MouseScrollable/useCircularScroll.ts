@@ -1,5 +1,5 @@
-import { RefObject } from "react";
-import { useInterval } from "src/common-hooks";
+import { RefObject, useEffect } from "react";
+import { useTrigger } from "src/common-hooks";
 
 export function useCircularScroll({
   ref,
@@ -12,19 +12,25 @@ export function useCircularScroll({
   circularScrollSizeX?: number;
   circularScrollSizeY?: number;
 }) {
-  useInterval(() => {
+  const trigger = useTrigger(() => {
+    if (ref.current == null) return;
     if (isMouseDown) return;
 
     if (circularScrollSizeX != null) {
-      ref.current?.scrollTo({
+      ref.current.scrollTo({
         left: (ref.current.scrollLeft % circularScrollSizeX) + circularScrollSizeX,
       });
     }
 
     if (circularScrollSizeY != null) {
-      ref.current?.scrollTo({
+      ref.current.scrollTo({
         top: (ref.current.scrollTop % circularScrollSizeY) + circularScrollSizeY,
       });
     }
-  }, 1000 / 60);
+  });
+
+  useEffect(() => {
+    const interval = setInterval(trigger, 1000 / 60);
+    return () => clearInterval(interval);
+  }, []);
 }
