@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { useMemo, useState } from "react";
-import { Clickable, MouseScrollable, ObserveResize } from "src/common-components";
+import { Clickable, MouseScrollable, Resizable } from "src/common-components";
 import { ColorSwatch, ColorSwatches } from "./ColorSwatches";
 import { getColorRows } from "./getColorRows";
 
@@ -41,7 +41,7 @@ export function SwatchesArea({
   );
 
   return (
-    <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
+    <Resizable onResize={({ width }) => setContainerWidth(width)}>
       <Clickable onClick={() => onSelectColor()}>
         <div className={cx("absolute", "size-full")}>
           <MouseScrollable
@@ -71,9 +71,9 @@ export function SwatchesArea({
               >
                 {isWideSwatches && colorSwatches}
 
-                <ObserveResize onResize={({ width }) => setSwatchesWidth(width)}>
+                <Resizable onResize={({ width }) => setSwatchesWidth(width)}>
                   {colorSwatches}
-                </ObserveResize>
+                </Resizable>
 
                 {isWideSwatches && colorSwatches}
               </div>
@@ -81,6 +81,6 @@ export function SwatchesArea({
           </MouseScrollable>
         </div>
       </Clickable>
-    </ObserveResize>
+    </Resizable>
   );
 }

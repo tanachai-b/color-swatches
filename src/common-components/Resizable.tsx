@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef } from "react";
 
-export function ObserveResize({
+export function Resizable({
   onResize,
   children,
 }: {

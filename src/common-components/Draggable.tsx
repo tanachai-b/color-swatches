@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
-import { ObserveResize } from "src/common-components";
+import { Resizable } from "src/common-components";
 
-export function DragArea({
+export function Draggable({
   onDrag,
   onDragStop,
   children,
@@ -45,8 +45,8 @@ export function DragArea({
   }
 
   return (
-    <ObserveResize onResize={({ x, y }) => setArea({ x, y })}>
+    <Resizable onResize={({ x, y }) => setArea({ x, y })}>
       <div onPointerDown={onPointerDown}>{children}</div>
-    </ObserveResize>
+    </Resizable>
   );
 }

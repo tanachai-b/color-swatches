@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
-import { DragArea } from "src/common-components";
+import { Draggable } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
 import { add, getColor, getXY, round } from "../functions";
 import { Thumb } from "./Thumb";
@@ -53,7 +53,7 @@ export function ColorWheel({
   }
 
   return (
-    <DragArea onDrag={onAreaDrag} onDragStop={onDragStop}>
+    <Draggable onDrag={onAreaDrag} onDragStop={onDragStop}>
       <div className={cx("relative")}>
         <canvas ref={wheelCanvas} width={size} height={size} />
 
@@ -61,7 +61,7 @@ export function ColorWheel({
 
         <Thumb {...thumbPosition} />
       </div>
-    </DragArea>
+    </Draggable>
   );
 }
 
