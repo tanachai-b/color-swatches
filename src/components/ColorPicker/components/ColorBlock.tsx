@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { Draggable } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
-import { add, getColor, round } from "../functions";
+import { getColor } from "../functions";
 import { Thumb } from "./Thumb";
 
 export function ColorBlock({
@@ -23,7 +23,6 @@ export function ColorBlock({
   const size = 125;
 
   const blockCanvas = useRef<HTMLCanvasElement>(null);
-  const lineCanvas = useRef<HTMLCanvasElement>(null);
 
   const thumbPosition = useMemo(
     () => ({ x: pointer.radius * size - 5, y: (1 - pointer.height) * size - 5 }),
@@ -33,10 +32,6 @@ export function ColorBlock({
   useEffect(() => {
     if (blockCanvas.current) drawBlock(blockCanvas.current, system, precision, angle);
   }, [system, precision, angle]);
-
-  useEffect(() => {
-    if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
-  }, [pointer]);
 
   function onAreaDrag(x: number, y: number): void {
     const radius = Math.min(Math.max(x / size, 0), 1);
@@ -50,7 +45,7 @@ export function ColorBlock({
       <div className={cx("relative")}>
         <canvas ref={blockCanvas} width={size} height={size} />
 
-        <canvas className={cx("absolute", "inset-0")} ref={lineCanvas} width={size} height={size} />
+        <Line size={size} pointer={pointer} />
 
         <Thumb {...thumbPosition} />
       </div>
@@ -84,41 +79,56 @@ function drawBlock(
   }
 }
 
-function drawLine(canvas: HTMLCanvasElement, pointer: { radius: number; height: number }) {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+function Line({
+  size,
+  pointer: { radius, height },
+}: {
+  size: number;
+  pointer: { radius: number; height: number };
+}) {
+  return (
+    <svg
+      className={cx("absolute", "inset-0")}
+      viewBox={`0 0 ${size} ${size}`}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1={0}
+        y1={(1 - height) * size}
+        x2={radius * size - 5}
+        y2={(1 - height) * size}
+        stroke="white"
+        strokeWidth={3}
+        strokeLinecap="round"
+      />
+      <line
+        x1={0}
+        y1={(1 - height) * size}
+        x2={radius * size - 5}
+        y2={(1 - height) * size}
+        stroke="black"
+        strokeWidth={1}
+        strokeLinecap="round"
+      />
 
-  const dimension = Math.min(canvas.width, canvas.height);
-
-  ctx.clearRect(0, 0, dimension, dimension);
-
-  if (dimension * pointer.radius > 5) {
-    stroke(ctx, dimension * (1 - pointer.height), 0, dimension * pointer.radius - 6);
-  }
-  if (dimension - dimension * pointer.radius > 5) {
-    stroke(ctx, dimension * (1 - pointer.height), dimension * pointer.radius + 5, dimension);
-  }
-}
-
-function stroke(ctx: CanvasRenderingContext2D, y: number, x1: number, x2: number) {
-  const offset = { x: 0.5, y: 0.5 };
-
-  const p1 = add(round({ x: x1, y }), offset);
-  const p2 = add(round({ x: x2, y }), offset);
-
-  ctx.lineCap = "round";
-
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = "#ffffff";
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.stroke();
-
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = "#000000";
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.stroke();
+      <line
+        x1={radius * size + 5}
+        y1={(1 - height) * size}
+        x2={size}
+        y2={(1 - height) * size}
+        stroke="white"
+        strokeWidth={3}
+        strokeLinecap="round"
+      />
+      <line
+        x1={radius * size + 5}
+        y1={(1 - height) * size}
+        x2={size}
+        y2={(1 - height) * size}
+        stroke="black"
+        strokeWidth={1}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }

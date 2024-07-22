@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { Draggable } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
-import { add, getColor, getXY, round } from "../functions";
+import { getColor } from "../functions";
 import { Thumb } from "./Thumb";
 
 export function ColorWheel({
@@ -24,12 +24,11 @@ export function ColorWheel({
   const center = size / 2;
 
   const wheelCanvas = useRef<HTMLCanvasElement>(null);
-  const lineCanvas = useRef<HTMLCanvasElement>(null);
 
   const thumbPosition = useMemo(
     () => ({
-      x: center + pointer.radius * Math.sin(pointer.angle * 2 * Math.PI) * center - 5,
-      y: center + -pointer.radius * Math.cos(pointer.angle * 2 * Math.PI) * center - 5,
+      x: center + pointer.radius * center * Math.sin(pointer.angle * 2 * Math.PI) - 5,
+      y: center - pointer.radius * center * Math.cos(pointer.angle * 2 * Math.PI) - 5,
     }),
     [pointer],
   );
@@ -37,10 +36,6 @@ export function ColorWheel({
   useEffect(() => {
     if (wheelCanvas.current) drawWheel(wheelCanvas.current, system, precision, height);
   }, [system, precision, height]);
-
-  useEffect(() => {
-    if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
-  }, [pointer]);
 
   function onAreaDrag(x0: number, y0: number): void {
     const x = x0 - center;
@@ -55,9 +50,11 @@ export function ColorWheel({
   return (
     <Draggable onDrag={onAreaDrag} onDragStop={onDragStop}>
       <div className={cx("relative")}>
-        <canvas ref={wheelCanvas} width={size} height={size} />
+        <div className={cx("rounded-full", "overflow-clip")}>
+          <canvas ref={wheelCanvas} width={size} height={size} />
+        </div>
 
-        <canvas className={cx("absolute", "inset-0")} ref={lineCanvas} width={size} height={size} />
+        <Line size={size} pointer={pointer} />
 
         <Thumb {...thumbPosition} />
       </div>
@@ -81,10 +78,6 @@ function drawWheel(
 
   ctx.clearRect(0, 0, dimension, dimension);
 
-  ctx.beginPath();
-  ctx.arc(center, center, center, 0, Math.PI * 2);
-  ctx.clip();
-
   for (let x = 0; x < dimension + 0; x += pixel) {
     for (let y = 0; y < dimension + 0; y += pixel) {
       if ((x - center) ** 2 + (y - center) ** 2 > (center + pixel * 2) ** 2) continue;
@@ -100,47 +93,58 @@ function drawWheel(
   }
 }
 
-function drawLine(canvas: HTMLCanvasElement, pointer: { angle: number; radius: number }) {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+function Line({
+  size,
+  pointer: { angle, radius },
+}: {
+  size: number;
+  pointer: { angle: number; radius: number };
+}) {
+  const center = size / 2;
 
-  const dimension = Math.min(canvas.width, canvas.height);
-  const center = dimension / 2;
+  return (
+    <svg
+      className={cx("absolute", "inset-0")}
+      viewBox={`0 0 ${size} ${size}`}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1={center}
+        y1={center}
+        x2={center + (radius * center - 5) * Math.sin(angle * 2 * Math.PI)}
+        y2={center - (radius * center - 5) * Math.cos(angle * 2 * Math.PI)}
+        stroke="white"
+        strokeWidth={3}
+        strokeLinecap="round"
+      />
+      <line
+        x1={center}
+        y1={center}
+        x2={center + (radius * center - 5) * Math.sin(angle * 2 * Math.PI)}
+        y2={center - (radius * center - 5) * Math.cos(angle * 2 * Math.PI)}
+        stroke="black"
+        strokeWidth={1}
+        strokeLinecap="round"
+      />
 
-  ctx.clearRect(0, 0, dimension, dimension);
-
-  ctx.beginPath();
-  ctx.arc(center, center, center, 0, Math.PI * 2);
-  ctx.clip();
-
-  if (center * pointer.radius > 5) {
-    stroke(ctx, center, pointer.angle, 0, center * pointer.radius - 6);
-  }
-  if (center - center * pointer.radius > 5) {
-    stroke(ctx, center, pointer.angle, center * pointer.radius + 5, center);
-  }
-}
-
-function stroke(ctx: CanvasRenderingContext2D, center: number, a: number, r1: number, r2: number) {
-  const cen = { x: center, y: center };
-  const offset = { x: 0.5, y: 0.5 };
-
-  const p1 = add(round(add(getXY(r1, a * 2 * Math.PI), cen)), offset);
-  const p2 = add(round(add(getXY(r2, a * 2 * Math.PI), cen)), offset);
-
-  ctx.lineCap = "round";
-
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = "#ffffff";
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.stroke();
-
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = "#000000";
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.stroke();
+      <line
+        x1={center + (radius * center + 5) * Math.sin(angle * 2 * Math.PI)}
+        y1={center - (radius * center + 5) * Math.cos(angle * 2 * Math.PI)}
+        x2={center + center * Math.sin(angle * 2 * Math.PI)}
+        y2={center - center * Math.cos(angle * 2 * Math.PI)}
+        stroke="white"
+        strokeWidth={3}
+        strokeLinecap="round"
+      />
+      <line
+        x1={center + (radius * center + 5) * Math.sin(angle * 2 * Math.PI)}
+        y1={center - (radius * center + 5) * Math.cos(angle * 2 * Math.PI)}
+        x2={center + center * Math.sin(angle * 2 * Math.PI)}
+        y2={center - center * Math.cos(angle * 2 * Math.PI)}
+        stroke="black"
+        strokeWidth={1}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }
