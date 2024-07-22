@@ -4,22 +4,22 @@ export function useMouseScroll(ref: RefObject<HTMLDivElement>) {
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
   useEffect(() => {
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    if (isMouseDown) {
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
 
-    return () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-    };
-  }, [onMouseMove, onMouseUp]);
+      return () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+    }
+  }, [isMouseDown, onMouseMove, onMouseUp]);
 
   function onMouseDown() {
     setIsMouseDown(true);
   }
 
-  function onMouseMove(e: MouseEvent | React.MouseEvent) {
-    if (!isMouseDown) return;
-
+  function onMouseMove(e: MouseEvent) {
     ref.current?.scrollTo({
       left: ref.current.scrollLeft - e.movementX,
       top: ref.current.scrollTop - e.movementY,

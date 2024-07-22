@@ -42,7 +42,7 @@ export function ColorWheel({
     if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
   }, [pointer]);
 
-  const onAreaDrag = (x0: number, y0: number): void => {
+  function onAreaDrag(x0: number, y0: number): void {
     const x = x0 - center;
     const y = y0 - center;
 
@@ -50,7 +50,7 @@ export function ColorWheel({
     const angle = ((Math.atan2(y, x) + Math.PI / 2) / (2 * Math.PI) + 1) % 1;
 
     onDrag(angle, radius);
-  };
+  }
 
   return (
     <DragArea onDrag={onAreaDrag} onDragStop={onDragStop}>

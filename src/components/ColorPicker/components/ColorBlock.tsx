@@ -38,12 +38,12 @@ export function ColorBlock({
     if (lineCanvas.current) drawLine(lineCanvas.current, pointer);
   }, [pointer]);
 
-  const onAreaDrag = (x: number, y: number): void => {
+  function onAreaDrag(x: number, y: number): void {
     const radius = Math.min(Math.max(x / size, 0), 1);
     const height = 1 - Math.min(Math.max(y / size, 0), 1);
 
     onDrag(radius, height);
-  };
+  }
 
   return (
     <DragArea onDrag={onAreaDrag} onDragStop={onDragStop}>

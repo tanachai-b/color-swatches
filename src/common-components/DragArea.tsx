@@ -10,24 +10,21 @@ export function DragArea({
   onDragStop: () => void;
   children: ReactNode;
 }) {
-  const [area, setArea] = useState<{ x: number; y: number; width: number; height: number }>({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  });
+  const [area, setArea] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const [isPointerDown, setIsPointerDown] = useState(false);
 
   useEffect(() => {
-    document.addEventListener("pointermove", onPointerMove);
-    document.addEventListener("pointerup", onPointerUp);
+    if (isPointerDown) {
+      document.addEventListener("pointermove", onPointerMove);
+      document.addEventListener("pointerup", onPointerUp);
 
-    return () => {
-      document.removeEventListener("pointermove", onPointerMove);
-      document.removeEventListener("pointerup", onPointerUp);
-    };
-  }, [onPointerMove, onPointerUp]);
+      return () => {
+        document.removeEventListener("pointermove", onPointerMove);
+        document.removeEventListener("pointerup", onPointerUp);
+      };
+    }
+  }, [isPointerDown, onPointerMove, onPointerUp]);
 
   function onPointerDown(e: React.PointerEvent) {
     setIsPointerDown(true);
@@ -35,11 +32,10 @@ export function DragArea({
   }
 
   function onPointerMove(e: PointerEvent) {
-    if (isPointerDown) drag(e.clientX, e.clientY);
+    drag(e.clientX, e.clientY);
   }
 
   function onPointerUp() {
-    if (!isPointerDown) return;
     setIsPointerDown(false);
     onDragStop();
   }
@@ -49,7 +45,7 @@ export function DragArea({
   }
 
   return (
-    <ObserveResize onResize={({ x, y, width, height }) => setArea({ x, y, width, height })}>
+    <ObserveResize onResize={({ x, y }) => setArea({ x, y })}>
       <div onPointerDown={onPointerDown}>{children}</div>
     </ObserveResize>
   );

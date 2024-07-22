@@ -44,7 +44,10 @@ export function SwatchesArea({
     <ObserveResize onResize={({ width }) => setContainerWidth(width)}>
       <Clickable onClick={() => onSelectColor()}>
         <div className={cx("absolute", "size-full")}>
-          <MouseScrollable circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}>
+          <MouseScrollable
+            className={cx("size-full", "overflow-auto")}
+            circularScrollSizeX={isWideSwatches ? swatchesWidth + 20 : undefined}
+          >
             <div
               className={cx(
                 "size-full",
