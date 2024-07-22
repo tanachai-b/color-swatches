@@ -1,9 +1,8 @@
 import cx from "classnames";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Draggable } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
 import { getColor } from "../functions";
-import { Thumb } from "./Thumb";
 
 export function ColorBlock({
   system,
@@ -24,11 +23,6 @@ export function ColorBlock({
 
   const blockCanvas = useRef<HTMLCanvasElement>(null);
 
-  const thumbPosition = useMemo(
-    () => ({ x: pointer.radius * size - 5, y: (1 - pointer.height) * size - 5 }),
-    [pointer],
-  );
-
   useEffect(() => {
     if (blockCanvas.current) drawBlock(blockCanvas.current, system, precision, angle);
   }, [system, precision, angle]);
@@ -46,8 +40,6 @@ export function ColorBlock({
         <canvas ref={blockCanvas} width={size} height={size} />
 
         <Line size={size} pointer={pointer} />
-
-        <Thumb {...thumbPosition} />
       </div>
     </Draggable>
   );
@@ -92,42 +84,67 @@ function Line({
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line
-        x1={0}
-        y1={(1 - height) * size}
-        x2={radius * size - 5}
-        y2={(1 - height) * size}
-        stroke="white"
-        strokeWidth={3}
-        strokeLinecap="round"
-      />
-      <line
-        x1={0}
-        y1={(1 - height) * size}
-        x2={radius * size - 5}
-        y2={(1 - height) * size}
-        stroke="black"
-        strokeWidth={1}
-        strokeLinecap="round"
-      />
+      {radius * size - 5 > 0 && (
+        <>
+          <line
+            x1={0}
+            y1={(1 - height) * size}
+            x2={radius * size - 5}
+            y2={(1 - height) * size}
+            stroke="white"
+            strokeWidth={3}
+            strokeLinecap="round"
+          />
+          <line
+            x1={0}
+            y1={(1 - height) * size}
+            x2={radius * size - 5}
+            y2={(1 - height) * size}
+            stroke="black"
+            strokeWidth={1}
+            strokeLinecap="round"
+          />
+        </>
+      )}
 
-      <line
-        x1={radius * size + 5}
-        y1={(1 - height) * size}
-        x2={size}
-        y2={(1 - height) * size}
+      {radius * size + 5 < size && (
+        <>
+          <line
+            x1={radius * size + 5}
+            y1={(1 - height) * size}
+            x2={size}
+            y2={(1 - height) * size}
+            stroke="white"
+            strokeWidth={3}
+            strokeLinecap="round"
+          />
+          <line
+            x1={radius * size + 5}
+            y1={(1 - height) * size}
+            x2={size}
+            y2={(1 - height) * size}
+            stroke="black"
+            strokeWidth={1}
+            strokeLinecap="round"
+          />
+        </>
+      )}
+
+      <circle
+        cx={radius * size}
+        cy={(1 - height) * size}
+        r="5"
+        fill="none"
         stroke="white"
         strokeWidth={3}
-        strokeLinecap="round"
       />
-      <line
-        x1={radius * size + 5}
-        y1={(1 - height) * size}
-        x2={size}
-        y2={(1 - height) * size}
+      <circle
+        cx={radius * size}
+        cy={(1 - height) * size}
+        r="5"
+        fill="none"
         stroke="black"
         strokeWidth={1}
-        strokeLinecap="round"
       />
     </svg>
   );

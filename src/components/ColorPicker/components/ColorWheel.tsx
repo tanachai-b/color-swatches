@@ -1,9 +1,8 @@
 import cx from "classnames";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Draggable } from "src/common-components";
 import { ColorSystems } from "../ColorPicker";
 import { getColor } from "../functions";
-import { Thumb } from "./Thumb";
 
 export function ColorWheel({
   system,
@@ -25,14 +24,6 @@ export function ColorWheel({
 
   const wheelCanvas = useRef<HTMLCanvasElement>(null);
 
-  const thumbPosition = useMemo(
-    () => ({
-      x: center + pointer.radius * center * Math.sin(pointer.angle * 2 * Math.PI) - 5,
-      y: center - pointer.radius * center * Math.cos(pointer.angle * 2 * Math.PI) - 5,
-    }),
-    [pointer],
-  );
-
   useEffect(() => {
     if (wheelCanvas.current) drawWheel(wheelCanvas.current, system, precision, height);
   }, [system, precision, height]);
@@ -49,14 +40,10 @@ export function ColorWheel({
 
   return (
     <Draggable onDrag={onAreaDrag} onDragStop={onDragStop}>
-      <div className={cx("relative")}>
-        <div className={cx("rounded-full", "overflow-clip")}>
-          <canvas ref={wheelCanvas} width={size} height={size} />
-        </div>
+      <div className={cx("relative", "rounded-full", "overflow-clip")}>
+        <canvas ref={wheelCanvas} width={size} height={size} />
 
         <Line size={size} pointer={pointer} />
-
-        <Thumb {...thumbPosition} />
       </div>
     </Draggable>
   );
@@ -108,42 +95,67 @@ function Line({
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line
-        x1={center}
-        y1={center}
-        x2={center + (radius * center - 5) * Math.sin(angle * 2 * Math.PI)}
-        y2={center - (radius * center - 5) * Math.cos(angle * 2 * Math.PI)}
-        stroke="white"
-        strokeWidth={3}
-        strokeLinecap="round"
-      />
-      <line
-        x1={center}
-        y1={center}
-        x2={center + (radius * center - 5) * Math.sin(angle * 2 * Math.PI)}
-        y2={center - (radius * center - 5) * Math.cos(angle * 2 * Math.PI)}
-        stroke="black"
-        strokeWidth={1}
-        strokeLinecap="round"
-      />
+      {radius * center - 5 > 0 && (
+        <>
+          <line
+            x1={center}
+            y1={center}
+            x2={center + (radius * center - 5) * Math.sin(angle * 2 * Math.PI)}
+            y2={center - (radius * center - 5) * Math.cos(angle * 2 * Math.PI)}
+            stroke="white"
+            strokeWidth={3}
+            strokeLinecap="round"
+          />
+          <line
+            x1={center}
+            y1={center}
+            x2={center + (radius * center - 5) * Math.sin(angle * 2 * Math.PI)}
+            y2={center - (radius * center - 5) * Math.cos(angle * 2 * Math.PI)}
+            stroke="black"
+            strokeWidth={1}
+            strokeLinecap="round"
+          />
+        </>
+      )}
 
-      <line
-        x1={center + (radius * center + 5) * Math.sin(angle * 2 * Math.PI)}
-        y1={center - (radius * center + 5) * Math.cos(angle * 2 * Math.PI)}
-        x2={center + center * Math.sin(angle * 2 * Math.PI)}
-        y2={center - center * Math.cos(angle * 2 * Math.PI)}
+      {radius * center + 5 < center && (
+        <>
+          <line
+            x1={center + (radius * center + 5) * Math.sin(angle * 2 * Math.PI)}
+            y1={center - (radius * center + 5) * Math.cos(angle * 2 * Math.PI)}
+            x2={center + center * Math.sin(angle * 2 * Math.PI)}
+            y2={center - center * Math.cos(angle * 2 * Math.PI)}
+            stroke="white"
+            strokeWidth={3}
+            strokeLinecap="round"
+          />
+          <line
+            x1={center + (radius * center + 5) * Math.sin(angle * 2 * Math.PI)}
+            y1={center - (radius * center + 5) * Math.cos(angle * 2 * Math.PI)}
+            x2={center + center * Math.sin(angle * 2 * Math.PI)}
+            y2={center - center * Math.cos(angle * 2 * Math.PI)}
+            stroke="black"
+            strokeWidth={1}
+            strokeLinecap="round"
+          />
+        </>
+      )}
+
+      <circle
+        cx={center + radius * center * Math.sin(angle * 2 * Math.PI)}
+        cy={center - radius * center * Math.cos(angle * 2 * Math.PI)}
+        r="5"
+        fill="none"
         stroke="white"
         strokeWidth={3}
-        strokeLinecap="round"
       />
-      <line
-        x1={center + (radius * center + 5) * Math.sin(angle * 2 * Math.PI)}
-        y1={center - (radius * center + 5) * Math.cos(angle * 2 * Math.PI)}
-        x2={center + center * Math.sin(angle * 2 * Math.PI)}
-        y2={center - center * Math.cos(angle * 2 * Math.PI)}
+      <circle
+        cx={center + radius * center * Math.sin(angle * 2 * Math.PI)}
+        cy={center - radius * center * Math.cos(angle * 2 * Math.PI)}
+        r="5"
+        fill="none"
         stroke="black"
         strokeWidth={1}
-        strokeLinecap="round"
       />
     </svg>
   );
