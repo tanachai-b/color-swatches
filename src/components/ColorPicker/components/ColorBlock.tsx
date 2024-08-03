@@ -27,7 +27,7 @@ export function ColorBlock({
     if (blockCanvas.current) drawBlock(blockCanvas.current, system, precision, angle);
   }, [system, precision, angle]);
 
-  function onAreaDrag(x: number, y: number): void {
+  function onAreaDrag({ x, y }: { x: number; y: number }): void {
     const radius = Math.min(Math.max(x / size, 0), 1);
     const height = 1 - Math.min(Math.max(y / size, 0), 1);
 

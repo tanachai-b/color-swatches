@@ -28,7 +28,7 @@ export function ColorWheel({
     if (wheelCanvas.current) drawWheel(wheelCanvas.current, system, precision, height);
   }, [system, precision, height]);
 
-  function onAreaDrag(x0: number, y0: number): void {
+  function onAreaDrag({ x: x0, y: y0 }: { x: number; y: number }): void {
     const x = x0 - center;
     const y = y0 - center;
 

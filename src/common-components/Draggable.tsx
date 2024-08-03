@@ -1,18 +1,36 @@
-import { ReactNode, useEffect, useState } from "react";
-import { Resizable } from "src/common-components";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 export function Draggable({
+  className,
   onDrag,
+  onDragStart,
   onDragStop,
   children,
 }: {
-  onDrag: (x: number, y: number) => void;
-  onDragStop: () => void;
+  className?: string;
+  onDrag: ({
+    x,
+    y,
+    dx,
+    dy,
+    cx,
+    cy,
+  }: {
+    x: number;
+    y: number;
+    dx: number;
+    dy: number;
+    cx: number;
+    cy: number;
+  }) => void;
+  onDragStart?: () => void;
+  onDragStop?: () => void;
   children: ReactNode;
 }) {
-  const [area, setArea] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const ref = useRef<HTMLDivElement>(null);
 
   const [isPointerDown, setIsPointerDown] = useState(false);
+  const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (isPointerDown) {
@@ -26,27 +44,38 @@ export function Draggable({
     }
   }, [isPointerDown, onPointerMove, onPointerUp]);
 
-  function onPointerDown(e: React.PointerEvent) {
+  function onPointerDown({ clientX, clientY }: React.PointerEvent) {
     setIsPointerDown(true);
-    drag(e.clientX, e.clientY);
+    setLastPosition({ x: clientX, y: clientY });
+    onDragStart?.();
   }
 
-  function onPointerMove(e: PointerEvent) {
-    drag(e.clientX, e.clientY);
+  function onPointerMove({ clientX, clientY }: PointerEvent) {
+    drag(clientX, clientY);
+    setLastPosition({ x: clientX, y: clientY });
   }
 
-  function onPointerUp() {
+  function onPointerUp({ clientX, clientY }: PointerEvent) {
     setIsPointerDown(false);
-    onDragStop();
+    drag(clientX, clientY);
+    onDragStop?.();
   }
 
-  function drag(x: number, y: number) {
-    onDrag(x - area.x, y - area.y);
+  function drag(clientX: number, clientY: number) {
+    const { x: rx = 0, y: ry = 0 } = ref.current?.getBoundingClientRect() ?? {};
+    onDrag({
+      x: clientX - rx,
+      y: clientY - ry,
+      dx: clientX - lastPosition.x,
+      dy: clientY - lastPosition.y,
+      cx: clientX,
+      cy: clientY,
+    });
   }
 
   return (
-    <Resizable onResize={({ x, y }) => setArea({ x, y })}>
-      <div onPointerDown={onPointerDown}>{children}</div>
-    </Resizable>
+    <div ref={ref} className={className} onPointerDown={onPointerDown}>
+      {children}
+    </div>
   );
 }
